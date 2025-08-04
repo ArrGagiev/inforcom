@@ -1,5 +1,6 @@
 import 'package:inforcom/core/resources/app_colors.dart';
 import 'package:inforcom/core/resources/app_icons.dart';
+import 'package:inforcom/core/resources/app_text_styles.dart';
 import 'package:inforcom/features/main/main_page.dart';
 import 'package:inforcom/features/map/map_page.dart';
 import 'package:inforcom/features/profile/profile_page.dart';
@@ -29,7 +30,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return PersistentTabView(
-      // navBarHeight: 80,
+      navBarOverlap: NavBarOverlap.custom(overlap: 30),
+      backgroundColor: AppColors.primary,
       onTabChanged: (tab) => setState(() => currentTab = tab),
       tabs: _buildTabsForAuthUser(context),
       navBarBuilder: (navBarConfig) => Style1BottomNavBar(
@@ -38,12 +40,12 @@ class _BottomNavBarState extends State<BottomNavBar> {
           padding: padding,
           border: Border.all(color: AppColors.lightGray),
           borderRadius: BorderRadius.circular(28),
-          color: Colors.white,
+          color: AppColors.primary,
           boxShadow: [
             BoxShadow(
               color: AppColors.dropShadow15.withAlpha(40),
               blurRadius: 7,
-              offset: const Offset(0, -3),
+              offset: const Offset(0, 3),
             ),
           ],
         ),
@@ -120,7 +122,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
         inactiveForegroundColor: AppColors.iconsBase,
         inactiveBackgroundColor: AppColors.iconsBase,
         title: title,
-        // textStyle: const TextStyle(height: 4),
+        textStyle: AppTextStyles.title4,
       ),
     );
   }
