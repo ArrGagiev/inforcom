@@ -12,7 +12,6 @@ class AppColors {
   static const yellow = Color(0xFFF5D545);
   static const red = Color(0xFFE54345);
   static const lightGray = Color(0xFFD9D9D9);
-  // тень на боттом баре
-  static const dropShadow15 = Color(0xFFB1B4B6);
+  static const dropShadow15 = Color(0xFFB1B4B6); // тень на боттом баре
   static const iconsBase = Color(0xFF1D1B20);
 }
