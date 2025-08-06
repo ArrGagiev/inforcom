@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:inforcom/core/widgets/check_boxes/fuel_list_selector.dart';
+import 'package:inforcom/core/services/primary_bottom_sheet.dart';
+import 'package:inforcom/core/widgets/buttons/primary_button.dart';
+import 'package:inforcom/features/map/widgets/filters/fuel_list_layout.dart';
 import 'package:inforcom/features/profile/widgets/fuel_type_selector.dart';
 
 class MainPage extends StatelessWidget {
@@ -13,7 +15,12 @@ class MainPage extends StatelessWidget {
         children: [
           FuelTypeSelector(),
           const SizedBox(height: 16),
-          FuelListSelector(),
+          PrimaryButton(
+            title: "Фильтры",
+            onPressed: () {
+              PrimaryBottomSheet.show(context, child: FuelListLayout());
+            },
+          ),
         ],
       ),
     );

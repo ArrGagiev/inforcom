@@ -52,6 +52,7 @@ class AppIcons {
   static const user = '$_icons/user_icon.svg';
   static const wc = '$_icons/wc_icon.svg';
   static const web = '$_icons/web_icon.svg';
+  static const dragHandle = '$_icons/drag_handle_icon.svg';
 
   // Иконки для карты  -------------------------------------------------------
   static const _mapIcons = 'assets/map_icons';
