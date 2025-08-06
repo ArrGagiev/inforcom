@@ -64,19 +64,15 @@ class _FuelTypeSelectorState extends State<FuelTypeSelector> {
             border: Border.all(color: AppColors.lightGray),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              child: ListView.separated(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                scrollDirection: Axis.horizontal,
-                itemCount: fuelTypes.length,
-                itemBuilder: (context, index) {
-                  final fuel = fuelTypes[index];
-                  final isSelected = selectedFuel == fuel.name;
-
-                  return InkWell(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: fuelTypes.map((fuel) {
+                final isSelected = selectedFuel == fuel.name;
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: InkWell(
                     borderRadius: BorderRadius.circular(8),
                     onTap: () {
                       setState(() {
@@ -106,10 +102,9 @@ class _FuelTypeSelectorState extends State<FuelTypeSelector> {
                         ),
                       ],
                     ),
-                  );
-                },
-                separatorBuilder: (_, __) => const SizedBox(width: 16),
-              ),
+                  ),
+                );
+              }).toList(),
             ),
           ),
         ),

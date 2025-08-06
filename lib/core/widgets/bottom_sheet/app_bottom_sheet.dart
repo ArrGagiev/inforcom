@@ -3,10 +3,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:inforcom/core/resources/app_colors.dart';
 import 'package:inforcom/core/resources/app_icons.dart';
 
-class PrimaryBottomSheet {
+class AppBottomSheet {
   static Future<void> show(BuildContext context, {required Widget child}) {
     return showModalBottomSheet(
       context: context,
+      useRootNavigator: true,
       isScrollControlled: true,
       backgroundColor: AppColors.primary,
       builder: (BuildContext context) {

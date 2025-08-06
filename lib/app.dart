@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:inforcom/core/bottom_nav_bar/bottom_nav_bar.dart';
+import 'package:inforcom/core/app_layout/app_layout.dart';
 import 'package:inforcom/core/resources/app_colors.dart';
 
 class App extends StatelessWidget {
@@ -8,15 +8,11 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-    
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: AppColors.primary,
-        bottomNavigationBar: SafeArea(
-          top: false,
-        child: BottomNavBar(),
-        ),
-        ),
+        bottomNavigationBar: SafeArea(top: false, child: AppLayout()),
+      ),
     );
   }
 }

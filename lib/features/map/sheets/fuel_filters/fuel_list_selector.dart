@@ -86,10 +86,7 @@ class _FuelListSelectorState extends State<FuelListSelector> {
                     child: Row(
                       children: [
                         Expanded(
-                          child: Text(
-                            fuel.name,
-                            style: AppTextStyles.body3,
-                          ),
+                          child: Text(fuel.name, style: AppTextStyles.body3),
                         ),
                         PrimaryCheckbox<String>(
                           value: fuel.name,
@@ -109,11 +106,14 @@ class _FuelListSelectorState extends State<FuelListSelector> {
                   ),
                 );
               },
-              separatorBuilder: (_, __) => const Divider(height: 1, color: AppColors.lightGray),
+              separatorBuilder: (_, __) =>
+                  const Divider(height: 1, color: AppColors.lightGray),
             ),
           ),
-          PrimaryButton(title: "Выбрать", onPressed: () {}),
-          const SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: PrimaryButton(title: "Выбрать", onPressed: () {}),
+          ),
         ],
       ),
     );

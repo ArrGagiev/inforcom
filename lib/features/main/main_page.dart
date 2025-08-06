@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:inforcom/core/services/primary_bottom_sheet.dart';
+import 'package:inforcom/core/widgets/bottom_sheet/app_bottom_sheet.dart';
 import 'package:inforcom/core/widgets/buttons/primary_button.dart';
 import 'package:inforcom/core/widgets/text_form/app_text_form.dart';
-import 'package:inforcom/features/map/widgets/filters/fuel_list_layout.dart';
+import 'package:inforcom/features/map/sheets/fuel_filters/fuel_filters_sheet_layout.dart';
 import 'package:inforcom/features/profile/widgets/fuel_type_selector.dart';
 
 class MainPage extends StatelessWidget {
@@ -14,7 +14,7 @@ class MainPage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          AppTextForm(labelText: 'Номер телефона', controller: null,),
+          AppTextForm(labelText: 'Номер телефона', controller: null),
           // TextFormField(),
           const SizedBox(height: 16),
           FuelTypeSelector(),
@@ -22,7 +22,7 @@ class MainPage extends StatelessWidget {
           PrimaryButton(
             title: "Фильтры",
             onPressed: () {
-              PrimaryBottomSheet.show(context, child: FuelListLayout());
+              AppBottomSheet.show(context, child: FuelFiltersSheetLayout());
             },
           ),
         ],

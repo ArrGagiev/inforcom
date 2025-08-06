@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:inforcom/core/resources/app_colors.dart';
 import 'package:inforcom/core/resources/app_icons.dart';
 import 'package:inforcom/core/resources/app_text_styles.dart';
@@ -6,62 +9,21 @@ import 'package:inforcom/features/map/map_page.dart';
 import 'package:inforcom/features/profile/profile_page.dart';
 import 'package:inforcom/features/promo/promo_page.dart';
 import 'package:inforcom/features/support/support_page.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
-class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({super.key});
-
-  @override
-  State<BottomNavBar> createState() => _BottomNavBarState();
-}
-
-class _BottomNavBarState extends State<BottomNavBar> {
-  int currentTab = 0;
-
-  final EdgeInsets padding = const EdgeInsets.only(
-    top: 12,
-    bottom: 16,
-    left: 22,
-    right: 22,
-  );
-
-  @override
-  Widget build(BuildContext context) {
-    return PersistentTabView(
-      navBarOverlap: NavBarOverlap.custom(overlap: 30),
-      backgroundColor: AppColors.primary,
-      onTabChanged: (tab) => setState(() => currentTab = tab),
-      tabs: _buildTabsForAuthUser(context),
-      navBarBuilder: (navBarConfig) => Style1BottomNavBar(
-        navBarConfig: navBarConfig,
-        navBarDecoration: NavBarDecoration(
-          padding: padding,
-          border: Border.all(color: AppColors.lightGray),
-          borderRadius: BorderRadius.circular(28),
-          color: AppColors.primary,
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.dropShadow15.withAlpha(40),
-              blurRadius: 7,
-              offset: const Offset(0, 3),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  List<PersistentTabConfig> _buildTabsForAuthUser(BuildContext context) {
+class AppNavBarConfig {
+  static List<PersistentTabConfig> getTabs(
+    BuildContext context,
+    int currentTab,
+  ) {
     return [
       _buildTab(
         context: context,
         activeIconPath: AppIcons.mainActive,
         inactiveIconPath: AppIcons.mainInactive,
         screen: const MainPage(),
-        title: "Галавная",
+        title: "Главная",
         index: 0,
+        currentTab: currentTab,
       ),
       _buildTab(
         context: context,
@@ -70,6 +32,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
         screen: const MapPage(),
         title: "Карта",
         index: 1,
+        currentTab: currentTab,
       ),
       _buildTab(
         context: context,
@@ -78,6 +41,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
         screen: const PromoPage(),
         title: "Акции",
         index: 2,
+        currentTab: currentTab,
       ),
       _buildTab(
         context: context,
@@ -86,6 +50,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
         screen: const SupportPage(),
         title: "Поддержка",
         index: 3,
+        currentTab: currentTab,
       ),
       _buildTab(
         context: context,
@@ -94,17 +59,19 @@ class _BottomNavBarState extends State<BottomNavBar> {
         screen: const ProfilePage(),
         title: "Профиль",
         index: 4,
+        currentTab: currentTab,
       ),
     ];
   }
 
-  PersistentTabConfig _buildTab({
+  static PersistentTabConfig _buildTab({
     required BuildContext context,
     required String activeIconPath,
     required String inactiveIconPath,
     required Widget screen,
     required String title,
     required int index,
+    required int currentTab,
   }) {
     return PersistentTabConfig(
       screen: screen,
