@@ -1,0 +1,49 @@
+Если добавлять валидацию В сам [AppTextForm], то как-то так:
+
+1.
+
+String? _validateInput(String? value) {
+  if (value == null || value.isEmpty) {
+    return 'Поле не может быть пустым';
+    // или return null, если поле необязательное
+  }
+
+  switch (type) {
+    case ValidationType.number:
+      if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
+        return 'Допустимы только цифры';
+      }
+      break;
+    case ValidationType.email:
+      if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+        return 'Некорректный email';
+      }
+      break;
+    case ValidationType.minSymbols:
+      if (value.length < 8) { 
+        return 'Минимум 8 символов';
+      }
+      break;
+    default:
+      return null; 
+  }
+  return null; 
+}
+
+
+2.
+
+return TextFormField(
+  enabled: enabled,
+  inputFormatters: type == ValidationType.number 
+      ? [MaskFormatter.appMaskFormatter] 
+      : null,
+  controller: controller,
+  keyboardType: type == ValidationType.number 
+      ? TextInputType.phone 
+      : null,
+  onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
+  style: AppTextStyles.body2,
+  decoration: _buildDecoration(context),
+  validator: _validateInput, 
+);

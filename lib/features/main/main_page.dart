@@ -14,8 +14,7 @@ class MainPage extends StatelessWidget {
           children: [
             AppTextForm(
               labelText: 'Номер телефона',
-              controller: null,
-              showErrorIcon: false,
+              showInfoIcon: false,
               showSearchIcon: true,
               hasError: true,
               type: ValidationType.number,
@@ -23,23 +22,20 @@ class MainPage extends StatelessWidget {
             const SizedBox(height: 16),
             AppTextForm(
               labelText: 'Что-то там2',
-              controller: null,
-              showErrorIcon: false,
+              showInfoIcon: false,
               showSearchIcon: false,
             ),
             const SizedBox(height: 16),
             AppTextForm(
               labelText: 'Что-то там',
-              controller: null,
-              showErrorIcon: true,
+              showInfoIcon: true,
               showSearchIcon: false,
             ),
             const SizedBox(height: 16),
             AppTextForm(
               labelText: 'Что-то там',
-              controller: null,
               enabled: false,
-              showErrorIcon: true,
+              showInfoIcon: true,
               showSearchIcon: true,
             ),
             const SizedBox(height: 16),
