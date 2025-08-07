@@ -1,121 +1,116 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:inforcom/core/resources/app_colors.dart';
+import 'package:inforcom/core/resources/app_icons.dart';
 import 'package:inforcom/core/resources/app_text_styles.dart';
 import 'package:inforcom/core/services/mask_formatter.dart';
 
-enum ValidationType {
-  number,
-  email,
-  min3Chars,
-}
+enum ValidationType { number, email, minSymbols }
 
-class AppTextForm extends StatefulWidget {
+class AppTextForm extends StatelessWidget {
   const AppTextForm({
     super.key,
     this.type,
-    this.maxLines,
     required this.labelText,
     required this.controller,
-    this.onValidation,
+    this.enabled = true,
+    required this.showErrorIcon, // Управляется из BLoC
+    required this.showSearchIcon, // Управляется из BLoC
+    this.hasError = false, // Флаг ошибки из BLoC
   });
 
   final ValidationType? type;
-  final int? maxLines;
   final String labelText;
   final TextEditingController? controller;
-  final bool Function(bool isValid)? onValidation;
-
-  @override
-  State<AppTextForm> createState() => _AppTextFormState();
-}
-
-class _AppTextFormState extends State<AppTextForm> {
-  final _formKey = GlobalKey<FormState>();
-  bool _showErrorIcon = false; //для отображения иконки ошибки
-  bool _isValid = false; //для отображения валидации
-
-  void _onSubmit() {
-    _formKey.currentState!.validate();
-  }
-
-  // @override
-  // void dispose() {
-  //   widget.controller.dispose();
-  //   super.dispose();
-  // }
-
-  String? _validateInput(String? value) {
-    if (value != null) {
-      switch (widget.type) {
-        case ValidationType.number:
-          final unmaskedText = MaskFormatter.appMaskFormatter.unmaskText(value);
-          if (!RegExp(r"^\+?\d{10,13}$").hasMatch(unmaskedText)) {
-            _showErrorIcon = true;
-            _isValid = false;
-            widget.onValidation!(_isValid);
-            return 'Некорректный номер телефона';
-          }
-          break;
-        case ValidationType.email:
-          if (!RegExp(
-                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$")
-              .hasMatch(value)) {
-            _showErrorIcon = true;
-            _isValid = false;
-            widget.onValidation!(_isValid);
-            return 'Некорректный email';
-          }
-          break;
-        case ValidationType.min3Chars:
-          if (value.length < 3) {
-            _showErrorIcon = true;
-            _isValid = false;
-            widget.onValidation!(_isValid);
-            return 'Введите не менее 3 символов';
-          }
-          break;
-        default:
-          return null;
-      }
-    }
-    _showErrorIcon = false;
-    widget.onValidation!(_isValid = true);
-    return null;
-  }
+  final bool enabled;
+  final bool showErrorIcon;
+  final bool showSearchIcon;
+  final bool hasError;
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: TextFormField(
-        inputFormatters:
-            ValidationType.number == widget.type ? [MaskFormatter.appMaskFormatter] : null,
-        controller: widget.controller,
-        maxLines: widget.maxLines,
-        keyboardType: ValidationType.number == widget.type ? TextInputType.number : null,
-        onTapOutside: (PointerDownEvent event) {
-          FocusManager.instance.primaryFocus?.unfocus();
-        },
-        // вводимый текст
-        style: AppTextStyles.body1, //todo: меняется вместе с темой <---
-        decoration: inputDecoration.copyWith(
-          labelText: widget.labelText,
-          suffixIcon: _showErrorIcon
-              ? Padding(
-                  padding: const EdgeInsets.only(right: 16),
-                  child: SvgPicture.asset('assets/icons/error_icon.svg'),
-                )
-              : null,
-        ),
-        //----------------------------------------------------------------------
-        validator: _validateInput,
-        onChanged: (text) => setState(() {
-          _onSubmit();
-        }),
-        //----------------------------------------------------------------------
+    return TextFormField(
+      enabled: enabled,
+      inputFormatters: type == ValidationType.number
+          ? [MaskFormatter.appMaskFormatter]
+          : null,
+      controller: controller,
+      keyboardType: type == ValidationType.number ? TextInputType.phone : null,
+      onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
+      style: AppTextStyles.body2,
+      decoration: _buildDecoration(context),
+      onChanged: (text) {
+        // context.read<YourFormBloc>().add(TextFieldChanged(
+        //   text: text,
+        //   fieldType: type,
+        // ));
+      },
+    );
+  }
+
+  InputDecoration _buildDecoration(BuildContext context) {
+    final borderColor = hasError
+        ? AppColors.red
+        : enabled == false
+        ? Colors.transparent
+        : AppColors.lightGray;
+
+    final focusedBorderColor = hasError ? AppColors.red : AppColors.accent2;
+
+    return InputDecoration(
+      errorText: hasError ? 'Supporting text' : null, //!
+      errorStyle: AppTextStyles.body3.copyWith(color: AppColors.red),
+      contentPadding: const EdgeInsets.all(16),
+      isCollapsed: true,
+      filled: true,
+      fillColor: enabled == false ? AppColors.lightGray : AppColors.primary,
+      floatingLabelBehavior: FloatingLabelBehavior.never,
+      labelText: labelText,
+      labelStyle: TextStyle(
+        color: enabled == false ? AppColors.secondaryText : AppColors.lightGray,
       ),
+
+      // Иконка поиска
+      prefixIcon: showSearchIcon
+          ? Padding(
+              padding: const EdgeInsets.only(left: 16, right: 10),
+              child: SvgPicture.asset(
+                AppIcons.search,
+                colorFilter: ColorFilter.mode(
+                  hasError
+                      ? AppColors.red
+                      : enabled == false
+                      ? AppColors.secondaryText
+                      : AppColors.iconsBase,
+                  BlendMode.srcIn,
+                ),
+              ),
+            )
+          : null,
+
+      // Иконка ошибки
+      suffixIcon: showErrorIcon
+          ? Padding(
+              padding: const EdgeInsets.only(right: 16),
+              child: SvgPicture.asset(
+                AppIcons.info,
+                colorFilter: ColorFilter.mode(
+                  enabled ? AppColors.lightGray : AppColors.secondaryText,
+                  BlendMode.srcIn,
+                ),
+              ),
+            )
+          : null,
+
+      suffixIconConstraints: const BoxConstraints(minWidth: 20, minHeight: 20),
+      prefixIconConstraints: const BoxConstraints(minWidth: 20, minHeight: 20),
+
+      // Бордеры с учетом ошибки и состояния
+      border: _otlineBorder(color: borderColor),
+      enabledBorder: _otlineBorder(color: borderColor),
+      focusedBorder: _otlineBorder(color: focusedBorderColor),
+      errorBorder: _otlineBorder(color: AppColors.red),
+      disabledBorder: _otlineBorder(color: Colors.transparent),
     );
   }
 }
@@ -123,24 +118,6 @@ class _AppTextFormState extends State<AppTextForm> {
 OutlineInputBorder _otlineBorder({required Color color}) {
   return OutlineInputBorder(
     borderSide: BorderSide(color: color, width: 1),
-    borderRadius: const BorderRadius.all(Radius.circular(16)),
+    borderRadius: const BorderRadius.all(Radius.circular(52)),
   );
 }
-
-final inputDecoration = InputDecoration(
-  contentPadding: const EdgeInsets.all(16),
-  // бордеры
-  border: _otlineBorder(color: AppColors.lightGray),
-  errorBorder: _otlineBorder(color: AppColors.red),
-  enabledBorder: _otlineBorder(color: AppColors.accent2),
-  focusedBorder: _otlineBorder(color: AppColors.accent2),
-  disabledBorder: _otlineBorder(color: AppColors.lightGray),
-  // текст плавающего заголовка ---------------------------------------------------
-  alignLabelWithHint: false, //никогда не наверху
-  // floatingLabelBehavior: FloatingLabelBehavior.auto,
-  // labelStyle: AppTypography.bodyLarge.copyWith(color: AppColors.gray),
-  // floatingLabelStyle: AppTypography.bodySmall.copyWith(color: AppColors.gray),
-  // ------------------------------------------------------------------------------
-  errorStyle: AppTextStyles.title3.copyWith(color: AppColors.red),
-  suffixIconConstraints: const BoxConstraints(minWidth: 20, minHeight: 20),
-);
