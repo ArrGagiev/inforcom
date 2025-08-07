@@ -50,9 +50,14 @@ class AppTextForm extends StatelessWidget {
   }
 
   InputDecoration _buildDecoration(BuildContext context) {
-    // Динамические цвета //---------------------------------------------------┐
-    final fillColor = enabled ? AppColors.primary : AppColors.lightGray;
-    final focusedBorderColor = hasError ? AppColors.red : AppColors.accent2;
+    // Динамические цвета //----------------┐
+    final fillColor = enabled 
+        ? AppColors.primary 
+        : AppColors.lightGray;
+
+    final focusedBorderColor = hasError 
+        ? AppColors.red 
+        : AppColors.accent2;
 
     final suffixIconColor = enabled
         ? AppColors.lightGray
@@ -73,7 +78,7 @@ class AppTextForm extends StatelessWidget {
     final labelTextStyleColor = enabled
         ? AppColors.lightGray
         : AppColors.secondaryText;
-    //-------------------------------------------------------------------------┘
+    //--------------------------------------┘
 
     return InputDecoration(
       // TODO: Текст ошибки допишу в зависимости от работы API
@@ -86,12 +91,12 @@ class AppTextForm extends StatelessWidget {
       floatingLabelBehavior: FloatingLabelBehavior.never,
       labelText: labelText,
       labelStyle: TextStyle(color: labelTextStyleColor),
-      // Иконки поиска и информации //-----------------------------------------┐
+      
       prefixIconConstraints: const BoxConstraints(minWidth: 20, minHeight: 20),
       suffixIconConstraints: const BoxConstraints(minWidth: 20, minHeight: 20),
       prefixIcon: _buildSearchIcon(prefixIconColor),
       suffixIcon: _buildInfoIcon(suffixIconColor),
-      //-----------------------------------------------------------------------┘
+      
       border: _outlineBorder(color: borderColor),
       enabledBorder: _outlineBorder(color: borderColor),
       focusedBorder: _outlineBorder(color: focusedBorderColor),
