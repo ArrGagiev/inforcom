@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:inforcom/core/widgets/text_form/app_text_form.dart';
+import 'package:inforcom/core/widgets/pin_code_field/pin_code_field_2.dart';
+import 'package:inforcom/core/widgets/pin_code_field/pin_code_field.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({super.key});
@@ -12,33 +13,9 @@ class MainPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            AppTextForm(
-              labelText: 'Номер телефона',
-              showInfoIcon: false,
-              showSearchIcon: true,
-              hasError: true,
-              type: ValidationType.number,
-            ),
-            const SizedBox(height: 16),
-            AppTextForm(
-              labelText: 'Что-то там2',
-              showInfoIcon: false,
-              showSearchIcon: false,
-            ),
-            const SizedBox(height: 16),
-            AppTextForm(
-              labelText: 'Что-то там',
-              showInfoIcon: true,
-              showSearchIcon: false,
-            ),
-            const SizedBox(height: 16),
-            AppTextForm(
-              labelText: 'Что-то там',
-              enabled: false,
-              showInfoIcon: true,
-              showSearchIcon: true,
-            ),
-            const SizedBox(height: 16),
+            PinCodeField(length: 4),
+            PinCodeField2(lenght: 4, correctPin: "1234"),
+            const SizedBox(height: 20),
           ],
         ),
       ),
