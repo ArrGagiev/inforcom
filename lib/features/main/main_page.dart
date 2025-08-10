@@ -14,7 +14,7 @@ class MainPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             PinCodeField(length: 4),
-            PinCodeField2(lenght: 4, correctPin: "1234"),
+            PinCodeField2(lenght: 4, correctPin: "1111"),
             const SizedBox(height: 20),
           ],
         ),
