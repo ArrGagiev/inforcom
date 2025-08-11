@@ -30,11 +30,11 @@ class _PinCodeField2State extends State<PinCodeField2> {
     _controller = TextEditingController();
   }
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _controller.dispose();
+  //   super.dispose();
+  // }
 
   void _validate(String pincode) {
     final newHasError = pincode.isNotEmpty && pincode.length < widget.lenght;

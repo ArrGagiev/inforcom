@@ -29,6 +29,7 @@ class AppIcons {
   static const clock = '$_icons/clock_icon.svg';
   static const close = '$_icons/close_icon.svg';
   static const cup = '$_icons/cup_icon.svg';
+  static const dragHandle = '$_icons/drag_handle_icon.svg';
   static const filter = '$_icons/filter_icon.svg';
   static const home = '$_icons/home_icon.svg';
   static const hospital = '$_icons/hospital_icon.svg';
@@ -39,6 +40,7 @@ class AppIcons {
   static const minus = '$_icons/minus_icon.svg';
   static const nearMe = '$_icons/near_me_icon.svg';
   static const parking = '$_icons/parking_icon.svg';
+  static const profile = '$_icons/profile_icon.svg';
   static const plus = '$_icons/plus_icon.svg';
   static const route = '$_icons/route_icon.svg';
   static const sale = '$_icons/sale_icon.svg';
@@ -52,7 +54,6 @@ class AppIcons {
   static const user = '$_icons/user_icon.svg';
   static const wc = '$_icons/wc_icon.svg';
   static const web = '$_icons/web_icon.svg';
-  static const dragHandle = '$_icons/drag_handle_icon.svg';
 
   // Иконки для карты  -------------------------------------------------------
   static const _mapIcons = 'assets/map_icons';

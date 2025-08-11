@@ -1,23 +1,52 @@
 import 'package:flutter/material.dart';
-import 'package:inforcom/core/widgets/pin_code_field/pin_code_field_2.dart';
-import 'package:inforcom/core/widgets/pin_code_field/pin_code_field.dart';
+import 'package:inforcom/core/resources/app_images.dart';
+import 'package:inforcom/core/resources/app_text_styles.dart';
+import 'package:inforcom/features/main/widgets/card_number_button.dart';
+import 'package:inforcom/features/main/widgets/promo_cards_horizontal.dart';
+import 'package:inforcom/features/main/widgets/promo_cards_vertical.dart';
+import 'package:inforcom/features/promo/promo_page.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            PinCodeField(length: 4),
-            PinCodeField2(lenght: 4, correctPin: "1111"),
-            const SizedBox(height: 20),
-          ],
-        ),
+    final inforcomLogo = Image.asset(
+      AppImages.inforcomLogo,
+      width: 197,
+      height: 65,
+    );
+
+    final inforcomCard = Image.asset(
+      AppImages.inforcomCard,
+      width: 332,
+      height: 211,
+    );
+
+    final mainTitle = Text(
+      'Навигатор посети\nАЗС Инфорком',
+      style: AppTextStyles.h2,
+      textAlign: TextAlign.center,
+    );
+
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const SizedBox(height: 76),
+          inforcomLogo,
+          const SizedBox(height: 24),
+          mainTitle,
+          const SizedBox(height: 20),
+          inforcomCard,
+          const SizedBox(height: 16),
+          // if(isAuth)
+          CardNumberButton(onTap: () {}),
+          const SizedBox(height: 20),
+          PromoCardsVertical(),
+          const SizedBox(height: 24),
+          PromoCardsHorizontal(),
+          const SizedBox(height: 64),
+        ],
       ),
     );
   }

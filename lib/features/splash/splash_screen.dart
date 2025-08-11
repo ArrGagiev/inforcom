@@ -29,7 +29,6 @@ class SplashScreen extends StatelessWidget {
           SizedBox(height: 76),
           inforcomLogo,
           SizedBox(height: 100),
-          // Container(color: Colors.green, width: 332, height: 211),
           inforcomCard,
           SizedBox(height: 32),
           PrimaryButton(
@@ -45,7 +44,6 @@ class SplashScreen extends StatelessWidget {
             onPressed: () {},
           ),
           SizedBox(height: 128),
-          // Container(color: Colors.green, width: 332, height: 52),
           AutoScrollCarousel(),
           SizedBox(height: 32),
           Text(
