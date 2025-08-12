@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:inforcom/core/resources/app_images.dart';
 import 'package:inforcom/core/resources/app_text_styles.dart';
 import 'package:inforcom/features/main/widgets/card_number_button.dart';
 import 'package:inforcom/features/main/widgets/promo_cards_horizontal.dart';
 import 'package:inforcom/features/main/widgets/promo_cards_vertical.dart';
-import 'package:inforcom/features/promo/promo_page.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({super.key});
@@ -40,11 +40,16 @@ class MainPage extends StatelessWidget {
           inforcomCard,
           const SizedBox(height: 16),
           // if(isAuth)
-          CardNumberButton(onTap: () {}),
+          CardNumberButton(
+            onTap: () {
+              GoRouter.of(context).go('/promo');
+            },
+          ),
           const SizedBox(height: 20),
           PromoCardsVertical(),
           const SizedBox(height: 24),
           PromoCardsHorizontal(),
+          const SizedBox(height: 64),
           const SizedBox(height: 64),
         ],
       ),

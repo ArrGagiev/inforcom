@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:inforcom/core/resources/app_colors.dart';
 
-class AppBottomNavStyle {
+class NavBarStyle {
   static const padding = EdgeInsets.only(
     top: 12,
     bottom: 16,
@@ -16,7 +16,11 @@ class AppBottomNavStyle {
       navBarDecoration: NavBarDecoration(
         padding: padding,
         border: Border.all(color: AppColors.lightGray),
-        borderRadius: BorderRadius.circular(28),
+        // borderRadius: BorderRadius.circular(28),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(28),
+          topRight: Radius.circular(28),
+        ),
         color: AppColors.primary,
         boxShadow: [
           BoxShadow(
