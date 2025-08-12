@@ -6,8 +6,8 @@ import 'package:inforcom/core/widgets/buttons/outline_button.dart';
 import 'package:inforcom/core/widgets/buttons/primary_button.dart';
 import 'package:inforcom/features/splash/widgets/auto_scroll_carousel.dart';
 
-class SplashScreen extends StatelessWidget {
-  const SplashScreen({super.key});
+class SplashPage extends StatelessWidget {
+  const SplashPage({super.key});
 
   @override
   Widget build(BuildContext context) {

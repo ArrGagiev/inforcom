@@ -22,7 +22,7 @@ class AppLayout extends StatelessWidget {
           navigationShell.goBranch(tab);
         });
       },
-      tabs: AppNavBarConfig2.getRouterTabs(
+      tabs: AppNavBarConfig.getRouterTabs(
         context,
         navigationShell.currentIndex,
       ),

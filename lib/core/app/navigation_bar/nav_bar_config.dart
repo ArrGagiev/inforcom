@@ -5,7 +5,7 @@ import 'package:inforcom/core/resources/app_colors.dart';
 import 'package:inforcom/core/resources/app_icons.dart';
 import 'package:inforcom/core/resources/app_text_styles.dart';
 
-class AppNavBarConfig2 {
+class AppNavBarConfig {
   static List<PersistentRouterTabConfig> getRouterTabs(
     BuildContext context,
     int currentTab,

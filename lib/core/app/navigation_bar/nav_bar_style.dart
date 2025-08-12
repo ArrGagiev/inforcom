@@ -16,11 +16,11 @@ class NavBarStyle {
       navBarDecoration: NavBarDecoration(
         padding: padding,
         border: Border.all(color: AppColors.lightGray),
-        // borderRadius: BorderRadius.circular(28),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(28),
-          topRight: Radius.circular(28),
-        ),
+        borderRadius: BorderRadius.circular(28),
+        // borderRadius: BorderRadius.only(
+        //   topLeft: Radius.circular(28),
+        //   topRight: Radius.circular(28),
+        // ),
         color: AppColors.primary,
         boxShadow: [
           BoxShadow(

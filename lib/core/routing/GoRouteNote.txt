@@ -1,0 +1,61 @@
+
+-----------------------------------------------------------------------------------------
+Пример вложенных маршрутов, на тот случай если это пригодится.
+-----------------------------------------------------------------------------------------
+StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/main',
+              builder: (context, state) =>
+                  SafeArea(bottom: false, child: const MainPage()),
+              // Это вложенный маршрут -> (/main/details), который:
+              // Относится к /main (так как находится внутри его routes).
+              // Мог бы использоваться для отображения деталей на главной
+              // вкладке (например, если MainPage – это список,
+              // а details – страница элемента).
+
+              // routes: [
+              //   GoRoute(
+              //     path: 'details',
+              //     builder: (context, state) =>
+              //         const Scaffold(body: Center(child: Text('Main details'))),
+              //   ),
+              // ],
+            ),
+          ],
+        ),
+
+
+-----------------------------------------------------------------------------------------
+Группировка маршрутов
+-----------------------------------------------------------------------------------------
+Если есть вложенные маршруты (например, /profile/settings), 
+можно добавить их в AppRoutes:
+
+class AppRoutes {
+  // Основные пути
+  static const String main = '/main';
+  
+  // Профиль
+  static const String profile = '/profile';
+  static const String profileSettings = '$profile/settings';
+
+  // Навигация
+  static void goToProfileSettings(BuildContext context) => _go(context, profileSettings);
+}
+
+
+-----------------------------------------------------------------------------------------
+Параметры маршрутов
+-----------------------------------------------------------------------------------------
+Для маршрутов с параметрами (например, /promo/:id):
+
+class AppRoutes {
+  static const String promo = '/promo';
+  static String promoDetails(String id) => '$promo/$id';
+
+  static void goToPromoDetails(BuildContext context, String id) {
+    _go(context, promoDetails(id));
+  }
+}
+
