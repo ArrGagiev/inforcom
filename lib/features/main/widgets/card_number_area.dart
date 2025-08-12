@@ -4,8 +4,8 @@ import 'package:inforcom/core/resources/app_colors.dart';
 import 'package:inforcom/core/resources/app_icons.dart';
 import 'package:inforcom/core/resources/app_text_styles.dart';
 
-class CardNumberButton extends StatelessWidget {
-  const CardNumberButton({super.key, required this.onTap});
+class CardNumberArea extends StatelessWidget {
+  const CardNumberArea({super.key, required this.onTap});
 
   final void Function()? onTap;
 
@@ -15,7 +15,7 @@ class CardNumberButton extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.circular(10),
         child: Padding(
           padding: const EdgeInsets.all(4),
           // TODO: учитывая не широкие размеры экранов могу перестроить под Flex
