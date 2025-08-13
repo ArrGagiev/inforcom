@@ -49,8 +49,7 @@ class MainPage extends StatelessWidget {
           PromoTitleArea(onTap: () => GoRouter.of(context).go(AppRoutes.promo)),
           const SizedBox(height: 16),
           PromoCardsHorizontal(),
-          const SizedBox(height: 64),
-          const SizedBox(height: 64),
+          const SizedBox(height: 94),
         ],
       ),
     );

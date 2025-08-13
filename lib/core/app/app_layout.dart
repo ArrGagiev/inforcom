@@ -12,22 +12,28 @@ class AppLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PersistentTabView.router(
-      navBarOverlap: NavBarOverlap.custom(overlap: 30),
-      backgroundColor: AppColors.primary,
-      onTabChanged: (tab) {
-        // addPostFrameCallback - чтобы отложить вызов после build
-        // и скрины успели подгрузиться.
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          navigationShell.goBranch(tab);
-        });
-      },
-      tabs: AppNavBarConfig.getRouterTabs(
-        context,
-        navigationShell.currentIndex,
+    return ColoredBox(
+      color: AppColors.primary,
+      child: SafeArea(
+        top: false,
+        child: PersistentTabView.router(
+          navBarOverlap: NavBarOverlap.custom(overlap: 30),
+          backgroundColor: AppColors.primary,
+          onTabChanged: (tab) {
+            // addPostFrameCallback - чтобы отложить вызов после build
+            // и скрины успели подгрузиться.
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              navigationShell.goBranch(tab);
+            });
+          },
+          tabs: AppNavBarConfig.getRouterTabs(
+            context,
+            navigationShell.currentIndex,
+          ),
+          navBarBuilder: NavBarStyle.buildNavBar,
+          navigationShell: navigationShell,
+        ),
       ),
-      navBarBuilder: NavBarStyle.buildNavBar,
-      navigationShell: navigationShell,
     );
   }
 }

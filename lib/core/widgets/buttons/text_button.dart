@@ -9,12 +9,14 @@ class PrimaryTextButton extends StatelessWidget {
     this.iconWidget,
     this.margin,
     this.onPressed,
+    this.accent2 = false,
   });
 
   final String title;
   final Widget? iconWidget;
   final EdgeInsetsGeometry? margin;
   final void Function()? onPressed;
+  final bool accent2;
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +28,15 @@ class PrimaryTextButton extends StatelessWidget {
           foregroundColor: WidgetStateProperty.resolveWith<Color>((states) {
             return states.contains(WidgetState.disabled)
                 ? AppColors.secondaryText
+                : accent2
+                ? AppColors.accent2
                 : AppColors.accent;
           }),
           overlayColor: WidgetStateProperty.resolveWith<Color?>((states) {
             return states.contains(WidgetState.pressed)
-                ? AppColors.accent.withAlpha(20)
+                ? accent2
+                      ? AppColors.accent2.withAlpha(20)
+                      : AppColors.accent.withAlpha(20)
                 : null;
           }),
           shape: WidgetStateProperty.all(

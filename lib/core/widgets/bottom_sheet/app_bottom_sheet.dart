@@ -6,6 +6,7 @@ import 'package:inforcom/core/resources/app_icons.dart';
 class AppBottomSheet {
   static Future<void> show(
     BuildContext context, {
+    double heightPercent = 0.7,
     bool isKeyboardOnTop = false,
     bool useRootNavigator = true,
     required Widget child,
@@ -27,7 +28,7 @@ class AppBottomSheet {
                   bottom: MediaQuery.of(context).viewInsets.bottom,
                 ),
           child: SizedBox(
-            height: screenHeight * 0.7,
+            height: screenHeight * heightPercent,
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: Column(
