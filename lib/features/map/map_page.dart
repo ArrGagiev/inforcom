@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:inforcom/core/widgets/bottom_sheet/app_bottom_sheet.dart';
 import 'package:inforcom/core/widgets/buttons/primary_button.dart';
-import 'package:inforcom/features/map/sheets/fuel_filters/fuel_filters_sheet_layout.dart';
-import 'package:inforcom/features/map/sheets/route_building/route_building_sheet_layout.dart';
+import 'package:inforcom/features/map/sheets/fuel_filters/fuel_filters_sheet.dart';
+import 'package:inforcom/features/map/sheets/route_building/route_building_sheet.dart';
 
 class MapPage extends StatelessWidget {
   const MapPage({super.key});
@@ -15,7 +15,7 @@ class MapPage extends StatelessWidget {
         PrimaryButton(
           title: 'Фильтры',
           onPressed: () {
-            AppBottomSheet.show(context, child: const FuelFiltersSheetLayout());
+            AppBottomSheet.show(context, child: const FuelFiltersSheet());
           },
         ),
         SizedBox(height: 16),
@@ -25,7 +25,7 @@ class MapPage extends StatelessWidget {
             AppBottomSheet.show(
               context,
               isKeyboardOnTop: true,
-              child: const RouteBuildingSheetLayout(),
+              child: const RouteBuildingSheet(),
             );
           },
         ),

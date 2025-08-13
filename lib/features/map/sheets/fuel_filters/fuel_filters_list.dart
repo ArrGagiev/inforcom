@@ -15,14 +15,14 @@ class FuelItem {
   }
 }
 
-class FuelListSelector extends StatefulWidget {
-  const FuelListSelector({super.key});
+class FuelFiltersList extends StatefulWidget {
+  const FuelFiltersList({super.key});
 
   @override
-  State<FuelListSelector> createState() => _FuelListSelectorState();
+  State<FuelFiltersList> createState() => _FuelFiltersListState();
 }
 
-class _FuelListSelectorState extends State<FuelListSelector> {
+class _FuelFiltersListState extends State<FuelFiltersList> {
   List<FuelItem> fuelItems = [];
   List<String> selectedFuel = [];
 

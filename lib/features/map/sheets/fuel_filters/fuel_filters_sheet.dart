@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:inforcom/core/resources/app_colors.dart';
 import 'package:inforcom/core/resources/app_text_styles.dart';
-import 'package:inforcom/features/map/sheets/fuel_filters/fuel_list_selector.dart';
+import 'package:inforcom/features/map/sheets/fuel_filters/fuel_filters_list.dart';
 
-class FuelFiltersSheetLayout extends StatelessWidget {
-  const FuelFiltersSheetLayout({super.key});
+class FuelFiltersSheet extends StatelessWidget {
+  const FuelFiltersSheet({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class FuelFiltersSheetLayout extends StatelessWidget {
             ),
           ],
         ),
-        const Expanded(child: FuelListSelector()),
+        const Expanded(child: FuelFiltersList()),
       ],
     );
   }

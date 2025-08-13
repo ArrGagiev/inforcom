@@ -68,20 +68,13 @@ final GoRouter appRouter = GoRouter(
   ],
 );
 
-GoRoute _buildRouteWithPadding({
-  required String path,
-  required Widget child,
-  double bottomPadding = 32,
-}) {
+GoRoute _buildRouteWithPadding({required String path, required Widget child}) {
   return GoRoute(
     path: path,
     builder: (context, state) => SafeArea(
       top: false,
       bottom: false,
-      child: Padding(
-        padding: EdgeInsets.only(bottom: bottomPadding),
-        child: child,
-      ),
+      child: Padding(padding: EdgeInsets.only(bottom: 32), child: child),
     ),
   );
 }
