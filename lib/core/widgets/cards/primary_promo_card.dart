@@ -24,7 +24,7 @@ class PrimaryPromoCard extends StatelessWidget {
     return Stack(
       children: [
         ClipRRect(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(12),
           child: Image.asset(image, fit: BoxFit.cover),
         ),
         Padding(
