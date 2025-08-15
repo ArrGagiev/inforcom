@@ -25,7 +25,7 @@ class SecondaryPromoCard extends StatelessWidget {
       alignment: Alignment.bottomCenter,
       children: [
         ClipRRect(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(12),
           child: Image.asset(
             image,
             fit: BoxFit.cover,
