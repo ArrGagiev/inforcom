@@ -7,10 +7,14 @@ class SecondaryPromoCard extends StatelessWidget {
     super.key,
     required this.image,
     required this.title,
+    this.width = 242,
+    this.height = 188,
   });
 
   final String image;
   final String title;
+  final double width;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +26,17 @@ class SecondaryPromoCard extends StatelessWidget {
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(16),
-          child: Image.asset(image, fit: BoxFit.cover, width: 242, height: 188),
+          child: Image.asset(
+            image,
+            fit: BoxFit.cover,
+            width: width,
+            height: height,
+          ),
         ),
         Padding(
           padding: const EdgeInsets.only(bottom: 16),
           child: SizedBox(
-            width: 242,
+            width: width,
             height: 38,
             child: DecoratedBox(
               decoration: BoxDecoration(color: Colors.white.withAlpha(980)),

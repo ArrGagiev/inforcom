@@ -4,7 +4,7 @@ import 'package:inforcom/core/resources/app_colors.dart';
 import 'package:inforcom/core/resources/app_icons.dart';
 
 class AppBottomSheet {
-  static Future<void> show(
+  static Future<void> showBottomSheet(
     BuildContext context, {
     double heightPercent = 0.7,
     bool isKeyboardOnTop = false,
