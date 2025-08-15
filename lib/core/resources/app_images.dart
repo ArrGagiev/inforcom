@@ -14,4 +14,5 @@ class AppImages {
   static const inforcomCard = '$_images/inforcom_card.png';
   static const promotion = '$_images/promotion.jpg';
   static const promotion2 = '$_images/promotion2.jpg';
+  static const map = '$_images/map_image.jpg';
 }
