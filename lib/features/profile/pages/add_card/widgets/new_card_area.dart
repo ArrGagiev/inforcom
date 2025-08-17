@@ -34,8 +34,8 @@ class NewCardArea extends StatelessWidget {
               SizedBox(height: 24),
               Row(
                 children: [
-                  SizedBox(
-                    width: 250,
+                  Flexible(
+                    flex: 3,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -53,8 +53,8 @@ class NewCardArea extends StatelessWidget {
                     ),
                   ),
                   SizedBox(width: 8),
-                  SizedBox(
-                    width: 86,
+                  Flexible(
+                    flex: 1,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

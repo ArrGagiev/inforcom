@@ -8,6 +8,10 @@ class InforcomCard extends StatelessWidget {
 
   final String cardNumber;
 
+  static final _cardNumberStyle = AppTextStyles.h1.copyWith(
+    color: AppColors.primary,
+  );
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -21,20 +25,15 @@ class InforcomCard extends StatelessWidget {
               child: Image.asset(AppImages.cardBackground, fit: BoxFit.cover),
             ),
           ),
-
           Positioned(
             top: 24,
             right: 24,
             child: Image.asset(AppImages.simpleLogo, width: 53),
           ),
-
           Positioned(
             bottom: 24,
             left: 24,
-            child: Text(
-              cardNumber,
-              style: AppTextStyles.h1.copyWith(color: AppColors.primary),
-            ),
+            child: Text(cardNumber, style: _cardNumberStyle),
           ),
         ],
       ),

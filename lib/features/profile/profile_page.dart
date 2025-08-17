@@ -8,9 +8,19 @@ import 'package:inforcom/core/routing/app_routes.dart';
 import 'package:inforcom/core/widgets/buttons/outline_button.dart';
 import 'package:inforcom/features/profile/widgets/fuel_type_selector.dart';
 import 'package:inforcom/features/profile/widgets/inforcom_card.dart';
+import 'package:inforcom/features/profile/widgets/sign_out_button.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
+
+  static final _titleStyle = 
+  AppTextStyles.h3.copyWith(color: AppColors.primaryText);
+
+  static final _secondaryTextStyle = 
+  AppTextStyles.body1.copyWith(color: AppColors.secondaryText);
+
+  static final _primaryTextStyle = 
+  AppTextStyles.body1.copyWith(color: AppColors.primaryText);
 
   @override
   Widget build(BuildContext context) {
@@ -20,24 +30,11 @@ class ProfilePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 44),
-            Align(
-              alignment: Alignment.centerRight,
-              child: InkWell(
-                borderRadius: BorderRadius.circular(10),
-                onTap: () {},
-                child: Padding(
-                  padding: const EdgeInsets.all(4),
-                  child: Text(
-                    'Выйти',
-                    style: AppTextStyles.body1.copyWith(color: AppColors.red),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: 24),
-            InforcomCard(cardNumber: '1234 5678 9012 3456'),
-            SizedBox(height: 16),
+            const SizedBox(height: 44),
+            SignOutButton(onTap: () {}),
+            const SizedBox(height: 24),
+            const InforcomCard(cardNumber: '1234 5678 9012 3456'),
+            const SizedBox(height: 16),
             OutlineButton(
               iconWidget: SvgPicture.asset(
                 AppIcons.plus,
@@ -51,33 +48,20 @@ class ProfilePage extends StatelessWidget {
                 context.push(AppRoutes.addCardFull);
               },
             ),
-            SizedBox(height: 32),
+            const SizedBox(height: 32),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Вид топлива',
-                  style: AppTextStyles.h3.copyWith(
-                    color: AppColors.primaryText,
-                  ),
-                ),
-                SizedBox(height: 16),
-                FuelTypeSelector(),
+                Text('Вид топлива', style: _titleStyle),
+                const SizedBox(height: 16),
+                const FuelTypeSelector(),
               ],
             ),
-            SizedBox(height: 32),
-            Text(
-              'Установленные лимиты:',
-              style: AppTextStyles.body1.copyWith(
-                color: AppColors.secondaryText,
-              ),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'Бензин: 35 л. (24 часа)',
-              style: AppTextStyles.body1.copyWith(color: AppColors.primaryText),
-            ),
-            SizedBox(height: 120),
+            const SizedBox(height: 32),
+            Text('Установленные лимиты:', style: _secondaryTextStyle),
+            const SizedBox(height: 8),
+            Text('Бензин: 35 л. (24 часа)', style: _primaryTextStyle),
+            const SizedBox(height: 120),
           ],
         ),
       ),

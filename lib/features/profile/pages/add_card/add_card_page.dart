@@ -13,7 +13,7 @@ class AddCardPage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           children: [
-            CustomAppBar(isSignedIn: true),
+            CustomAppBar(),
             const SizedBox(height: 16),
             NewCardArea(),
             const SizedBox(height: 16),

@@ -5,9 +5,11 @@ import 'package:inforcom/core/resources/app_icons.dart';
 import 'package:inforcom/core/resources/app_text_styles.dart';
 
 class CustomAppBar extends StatelessWidget {
-  const CustomAppBar({super.key, this.isSignedIn = false});
+  const CustomAppBar({super.key});
 
-  final bool isSignedIn;
+  static final _textStyle = AppTextStyles.h3.copyWith(
+    color: AppColors.primaryText,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -23,30 +25,10 @@ class CustomAppBar extends StatelessWidget {
             onPressed: () => Navigator.pop(context),
             padding: EdgeInsets.zero,
           ),
-          const SizedBox(width: 4), // Нужное вам расстояние
-          Text(
-            'Назад',
-            style: AppTextStyles.h3.copyWith(color: AppColors.primaryText),
-          ),
+          const SizedBox(width: 4),
+          Text('Назад', style: _textStyle),
         ],
       ),
-      actions: [
-        if (isSignedIn)
-          Padding(
-            padding: const EdgeInsets.only(right: 16, top: 10),
-            child: InkWell(
-              borderRadius: BorderRadius.circular(10),
-              onTap: () {},
-              child: Padding(
-                padding: const EdgeInsets.all(4),
-                child: Text(
-                  'Выйти',
-                  style: AppTextStyles.body1.copyWith(color: AppColors.red),
-                ),
-              ),
-            ),
-          ),
-      ],
     );
   }
 }
