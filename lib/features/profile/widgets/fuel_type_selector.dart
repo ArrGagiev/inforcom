@@ -54,58 +54,55 @@ class _FuelTypeSelectorState extends State<FuelTypeSelector> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: SizedBox(
-        height: 108,
-        width: MediaQuery.of(context).size.width,
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            border: Border.all(color: AppColors.lightGray),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: fuelTypes.map((fuel) {
-                final isSelected = selectedFuel == fuel.name;
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(8),
-                    onTap: () {
-                      setState(() {
-                        selectedFuel = fuel.name;
-                      });
-                    },
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          fuel.name,
-                          style: AppTextStyles.title1.copyWith(
-                            color: isSelected
-                                ? AppColors.accent
-                                : AppColors.primaryText,
-                          ),
+    return SizedBox(
+      height: 108,
+      width: MediaQuery.of(context).size.width,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          border: Border.all(color: AppColors.lightGray),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: fuelTypes.map((fuel) {
+              final isSelected = selectedFuel == fuel.name;
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(8),
+                  onTap: () {
+                    setState(() {
+                      selectedFuel = fuel.name;
+                    });
+                  },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        fuel.name,
+                        style: AppTextStyles.title1.copyWith(
+                          color: isSelected
+                              ? AppColors.accent
+                              : AppColors.primaryText,
                         ),
-                        const SizedBox(height: 8),
-                        PrimaryRadioButton<String>(
-                          value: fuel.name,
-                          groupValue: selectedFuel,
-                          onChanged: (value) {
-                            setState(() {
-                              selectedFuel = value;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(height: 8),
+                      PrimaryRadioButton<String>(
+                        value: fuel.name,
+                        groupValue: selectedFuel,
+                        onChanged: (value) {
+                          setState(() {
+                            selectedFuel = value;
+                          });
+                        },
+                      ),
+                    ],
                   ),
-                );
-              }).toList(),
-            ),
+                ),
+              );
+            }).toList(),
           ),
         ),
       ),

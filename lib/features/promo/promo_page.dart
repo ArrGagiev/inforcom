@@ -16,9 +16,9 @@ class PromoPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 48),
+          SizedBox(height: 44),
           Text('Наши акции', style: titleStyle),
-          SizedBox(height: 24),
+          SizedBox(height: 8),
           Expanded(
             child: ListView.separated(
               itemCount: 12,
