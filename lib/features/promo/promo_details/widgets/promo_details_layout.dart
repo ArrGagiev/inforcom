@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:inforcom/core/resources/app_colors.dart';
+import 'package:inforcom/core/resources/app_icons.dart';
 import 'package:inforcom/core/resources/app_images.dart';
+import 'package:inforcom/core/resources/app_text_styles.dart';
 
 class PromoDetailsLayout extends StatelessWidget {
   const PromoDetailsLayout({super.key, this.promoImage, this.child});
@@ -33,6 +37,32 @@ class PromoDetailsLayout extends StatelessWidget {
                   fit: BoxFit.cover,
                   alignment: Alignment.center,
                 ),
+              ),
+            ),
+          ),
+
+          // Кнопка "Назад" со стрелкой
+          Positioned(
+            top: MediaQuery.of(context).padding.top + 16,
+            left: 16,
+            child: GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SvgPicture.asset(
+                    AppIcons.backArrow,
+                    colorFilter: ColorFilter.mode(
+                      AppColors.primary,
+                      BlendMode.srcIn,
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    'Назад к акциям',
+                    style: AppTextStyles.h3.copyWith(color: AppColors.primary),
+                  ),
+                ],
               ),
             ),
           ),

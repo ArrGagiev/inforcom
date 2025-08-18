@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inforcom/core/widgets/buttons/primary_button.dart';
-import 'package:inforcom/features/profile/pages/add_card/widgets/custom_appbar.dart';
-import 'package:inforcom/features/profile/pages/add_card/widgets/new_card_area.dart';
+import 'package:inforcom/core/widgets/custom_appbar/custom_appbar.dart';
+import 'package:inforcom/features/profile/pages/add_card/new_card_area.dart';
 
 class AddCardPage extends StatelessWidget {
   const AddCardPage({super.key});
