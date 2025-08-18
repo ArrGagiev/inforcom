@@ -9,4 +9,9 @@ class AppRoutes {
   // Страница добавления топливной карты
   static const String addCard = 'add-card';
   static String get addCardFull => '$profile/$addCard';
+
+  // Подмаршруты акций
+  // Страница акции - детально
+  static const String promoDetails = 'promo-details';
+  static String get promoDetailsFull => '$promo/$promoDetails';
 }

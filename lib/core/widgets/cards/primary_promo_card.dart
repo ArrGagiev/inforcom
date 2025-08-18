@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:inforcom/core/resources/app_colors.dart';
 import 'package:inforcom/core/resources/app_text_styles.dart';
+import 'package:inforcom/core/routing/app_routes.dart';
 
 class PrimaryPromoCard extends StatelessWidget {
   const PrimaryPromoCard({
@@ -21,23 +23,26 @@ class PrimaryPromoCard extends StatelessWidget {
       color: AppColors.primary,
     );
 
-    return Stack(
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: Image.asset(image, fit: BoxFit.cover),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(title, style: titleStyle),
-              Text(subtitle, style: subtitleStyle),
-            ],
+    return GestureDetector(
+      onTap: () => context.push(AppRoutes.promoDetailsFull),
+      child: Stack(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Image.asset(image, fit: BoxFit.cover),
           ),
-        ),
-      ],
+          Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: titleStyle),
+                Text(subtitle, style: subtitleStyle),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

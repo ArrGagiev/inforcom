@@ -5,6 +5,7 @@ import 'package:inforcom/core/routing/app_routes.dart';
 import 'package:inforcom/features/main/main_page.dart';
 import 'package:inforcom/features/map/map_page.dart';
 import 'package:inforcom/features/profile/pages/add_card/add_card_page.dart';
+import 'package:inforcom/features/promo/promo_details/promo_detail_page.dart';
 import 'package:inforcom/features/promo/promo_page.dart';
 import 'package:inforcom/features/support/support_page.dart';
 import 'package:inforcom/features/profile/profile_page.dart';
@@ -41,6 +42,12 @@ final GoRouter appRouter = GoRouter(
             _buildRouteWithPadding(
               path: AppRoutes.promo,
               child: const PromoPage(),
+              routes: [
+                _buildRouteWithPadding(
+                  path: AppRoutes.promoDetails,
+                  child: const PromoDetailPage(),
+                ),
+              ],
             ),
           ],
         ),
