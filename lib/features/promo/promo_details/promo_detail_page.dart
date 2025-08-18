@@ -54,7 +54,7 @@ class PromoDetailPage extends StatelessWidget {
                 ),
                 LinkArea(
                   color: AppColors.accent2,
-                  icon: AppIcons.web,
+                  icon: AppIcons.phone,
                   text: '+7 988 999 00 00',
                 ),
               ],

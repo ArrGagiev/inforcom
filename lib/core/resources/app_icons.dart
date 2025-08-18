@@ -41,6 +41,7 @@ class AppIcons {
   static const nearMe = '$_icons/near_me_icon.svg';
   static const parking = '$_icons/parking_icon.svg';
   static const profile = '$_icons/profile_icon.svg';
+  static const phone = '$_icons/phone_icon.svg';
   static const plus = '$_icons/plus_icon.svg';
   static const route = '$_icons/route_icon.svg';
   static const sale = '$_icons/sale_icon.svg';
