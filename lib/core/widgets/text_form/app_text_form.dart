@@ -1,12 +1,13 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:inforcom/core/resources/app_colors.dart';
 import 'package:inforcom/core/resources/app_icons.dart';
 import 'package:inforcom/core/resources/app_text_styles.dart';
 import 'package:inforcom/core/services/mask_formatter.dart';
 
-enum ValidationType { number, email, minSymbols }
+enum ValidationType { phoneNumber, cardNumber, cardCode }
 
 class AppTextForm extends StatelessWidget {
   const AppTextForm({
@@ -35,11 +36,9 @@ class AppTextForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       enabled: enabled,
-      inputFormatters: type == ValidationType.number
-          ? [MaskFormatter.appMaskFormatter]
-          : null,
+      inputFormatters: _getInputFormatters(),
       controller: controller,
-      keyboardType: type == ValidationType.number ? TextInputType.phone : null,
+      keyboardType: _getKeyboardType(),
       onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
       style: AppTextStyles.body2,
       decoration: _buildDecoration(context),
@@ -47,6 +46,31 @@ class AppTextForm extends StatelessWidget {
         log(text);
       },
     );
+  }
+
+  List<TextInputFormatter>? _getInputFormatters() {
+    switch (type) {
+      case ValidationType.phoneNumber:
+        return [MaskFormatter.phoneNumber];
+      case ValidationType.cardNumber:
+        return [MaskFormatter.cardNumber];
+      case ValidationType.cardCode:
+        return [MaskFormatter.cardCode];
+      default:
+        return null;
+    }
+  }
+
+  TextInputType? _getKeyboardType() {
+    switch (type) {
+      case ValidationType.phoneNumber:
+        return TextInputType.phone;
+      case ValidationType.cardNumber:
+      case ValidationType.cardCode:
+        return TextInputType.number;
+      default:
+        return null;
+    }
   }
 
   InputDecoration _buildDecoration(BuildContext context) {
@@ -78,7 +102,7 @@ class AppTextForm extends StatelessWidget {
       // TODO: Текст ошибки допишу в зависимости от работы API
       errorText: hasError ? 'Something went wrong' : null,
       errorStyle: AppTextStyles.body3.copyWith(color: AppColors.red),
-      contentPadding: const EdgeInsets.all(16),
+      contentPadding: const EdgeInsets.all(14),
       isCollapsed: true,
       filled: true,
       fillColor: fillColor,

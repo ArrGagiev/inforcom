@@ -48,7 +48,10 @@ class NewCardArea extends StatelessWidget {
                             ),
                           ),
                         ),
-                        AppTextForm(labelText: 'XXXX XXXX XXXX XXXX'),
+                        AppTextForm(
+                          labelText: 'XXXX XXXX XXXX XXXX',
+                          type: ValidationType.cardNumber,
+                        ),
                       ],
                     ),
                   ),
@@ -67,7 +70,10 @@ class NewCardArea extends StatelessWidget {
                             ),
                           ),
                         ),
-                        AppTextForm(labelText: 'XXXX'),
+                        AppTextForm(
+                          labelText: 'XXXX',
+                          type: ValidationType.cardCode,
+                        ),
                       ],
                     ),
                   ),
