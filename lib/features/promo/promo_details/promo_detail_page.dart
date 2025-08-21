@@ -44,20 +44,24 @@ class PromoDetailPage extends StatelessWidget {
                   'Оптовые цены! Оформить заказ можно через вашего менеджера, или по телефону.',
             ),
             SizedBox(height: 44),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                LinkArea(
-                  color: AppColors.accent,
-                  icon: AppIcons.web,
-                  text: 'Перейти на сайт',
-                ),
-                LinkArea(
-                  color: AppColors.accent2,
-                  icon: AppIcons.phone,
-                  text: '+7 988 999 00 00',
-                ),
-              ],
+            Align(
+              alignment: Alignment.center,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  LinkArea(
+                    color: AppColors.accent,
+                    icon: AppIcons.web,
+                    text: 'Перейти на сайт',
+                  ),
+                  SizedBox(width: 8),
+                  LinkArea(
+                    color: AppColors.accent2,
+                    icon: AppIcons.phone,
+                    text: '+7 988 999 00 00',
+                  ),
+                ],
+              ),
             ),
           ],
         ),

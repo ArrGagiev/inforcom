@@ -30,10 +30,14 @@ class InforcomCard extends StatelessWidget {
             right: 24,
             child: Image.asset(AppImages.simpleLogo, width: 53),
           ),
-          Positioned(
-            bottom: 24,
-            left: 24,
-            child: Text(cardNumber, style: _cardNumberStyle),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: FittedBox(
+                child: Text(cardNumber, style: _cardNumberStyle),
+              ),
+            ),
           ),
         ],
       ),

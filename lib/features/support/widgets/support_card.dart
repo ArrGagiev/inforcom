@@ -22,7 +22,6 @@ class SupportCard extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: SizedBox(
           width: MediaQuery.of(context).size.width,
-          height: 340,
           child: DecoratedBox(
             decoration: BoxDecoration(
               color: AppColors.primary,
@@ -31,11 +30,14 @@ class SupportCard extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    'Поддержка водителей',
-                    style: AppTextStyles.h2.copyWith(
-                      color: AppColors.primaryText,
+                  FittedBox(
+                    child: Text(
+                      'Поддержка водителей',
+                      style: AppTextStyles.h2.copyWith(
+                        color: AppColors.primaryText,
+                      ),
                     ),
                   ),
                   SizedBox(height: 24),
@@ -84,6 +86,7 @@ class SupportCard extends StatelessWidget {
                       ),
                     ),
                   ),
+                  SizedBox(height: 10),
                 ],
               ),
             ),

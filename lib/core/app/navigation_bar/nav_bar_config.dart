@@ -77,7 +77,7 @@ class AppNavBarConfig {
         inactiveForegroundColor: AppColors.iconsBase,
         inactiveBackgroundColor: AppColors.iconsBase,
         title: title,
-        textStyle: AppTextStyles.title4,
+        textStyle: AppTextStyles.caption,
       ),
     );
   }

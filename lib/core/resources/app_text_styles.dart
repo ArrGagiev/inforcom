@@ -78,7 +78,7 @@ class AppTextStyles {
   static const TextStyle caption = TextStyle(
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w400, // Regular
-    fontSize: 12,
+    fontSize: 11,
     height: 1.4, // 140%
   );
 }
