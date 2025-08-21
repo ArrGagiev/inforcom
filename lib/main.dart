@@ -5,6 +5,7 @@ import 'package:yandex_maps_mapkit/init.dart' as init;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await init.initMapkit(apiKey: 'ecde1cf6-a396-4263-ad65-4a7b3914b363');
+  final mapkitApiKey = String.fromEnvironment('MAPKIT_API_KEY');
+  await init.initMapkit(apiKey: mapkitApiKey);
   runApp(const App());
 }

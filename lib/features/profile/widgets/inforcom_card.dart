@@ -8,7 +8,7 @@ class InforcomCard extends StatelessWidget {
 
   final String cardNumber;
 
-  static final _cardNumberStyle = AppTextStyles.h1.copyWith(
+  static final _cardNumberStyle = AppTextStyles.h2.copyWith(
     color: AppColors.primary,
   );
 
@@ -31,7 +31,7 @@ class InforcomCard extends StatelessWidget {
             child: Image.asset(AppImages.simpleLogo, width: 53),
           ),
           Align(
-            alignment: Alignment.bottomCenter,
+            alignment: Alignment.bottomLeft,
             child: Padding(
               padding: const EdgeInsets.all(24),
               child: FittedBox(
