@@ -1,7 +1,14 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:inforcom/core/resources/app_colors.dart';
 import 'package:inforcom/core/resources/app_icons.dart';
+import 'package:inforcom/core/widgets/bottom_sheet/app_bottom_sheet.dart';
+import 'package:inforcom/features/map/sheets/fuel_filters/fuel_filters_sheet.dart';
+import 'package:inforcom/features/map/sheets/route_building/route_building_sheet.dart';
+import 'package:inforcom/features/map/widgets/map_button.dart';
+import 'package:inforcom/features/map/widgets/map_traffic_button.dart';
 import 'package:inforcom/features/map/zoom_controller.dart';
 import 'package:yandex_maps_mapkit/mapkit.dart' hide Icon;
 import 'package:yandex_maps_mapkit/mapkit_factory.dart';
@@ -51,7 +58,6 @@ class _MyMapPageState extends State<MyMapPage> {
                   mini: true,
                   child: SvgPicture.asset(AppIcons.plus),
                 ),
-                const SizedBox(height: 8),
                 FloatingActionButton(
                   backgroundColor: AppColors.primary,
                   onPressed: () => _zoomController?.zoomOut(),
@@ -59,6 +65,39 @@ class _MyMapPageState extends State<MyMapPage> {
                   child: SvgPicture.asset(AppIcons.minus),
                 ),
               ],
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 54, left: 16, right: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  MapButton(
+                    onPressed: () {
+                      AppBottomSheet.showBottomSheet(
+                        context,
+                        child: const FuelFiltersSheet(),
+                      );
+                    },
+                    icon: AppIcons.filter,
+                  ),
+                  const SizedBox(width: 4),
+                  MapButton(
+                    onPressed: () {
+                      AppBottomSheet.showBottomSheet(
+                        context,
+                        isKeyboardOnTop: true,
+                        child: const RouteBuildingSheet(),
+                      );
+                    },
+                    icon: AppIcons.route,
+                  ),
+                  Spacer(),
+                  MapTrafficButton(onPressed: () {}),
+                ],
+              ),
             ),
           ),
         ],

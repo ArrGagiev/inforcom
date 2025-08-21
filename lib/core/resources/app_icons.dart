@@ -50,8 +50,8 @@ class AppIcons {
   static const settings = '$_icons/settings_icon.svg';
   static const shower = '$_icons/shower_icon.svg';
   static const toilet = '$_icons/toilet_icon.svg';
-  static const trafficOff = '$_icons/traffic_off_icon.svg';
-  static const trafficOn = '$_icons/traffic_on_icon.svg';
+  static const trafficOff = '$_icons/traffic_off_icon.png';
+  static const trafficOn = '$_icons/traffic_on_icon.png';
   static const user = '$_icons/user_icon.svg';
   static const wc = '$_icons/wc_icon.svg';
   static const web = '$_icons/web_icon.svg';
