@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:inforcom/core/resources/app_colors.dart';
 import 'package:inforcom/core/resources/app_icons.dart';
 
-class MapTrafficButton extends StatefulWidget {
+class TrafficToggleButton extends StatefulWidget {
   final VoidCallback? onPressed;
 
-  const MapTrafficButton({super.key, this.onPressed});
+  const TrafficToggleButton({super.key, this.onPressed});
 
   @override
-  State<MapTrafficButton> createState() => _MapTrafficButtonState();
+  State<TrafficToggleButton> createState() => _TrafficToggleButtonState();
 }
 
-class _MapTrafficButtonState extends State<MapTrafficButton> {
+class _TrafficToggleButtonState extends State<TrafficToggleButton> {
   bool _isActive = false;
 
   void _handleTap() {

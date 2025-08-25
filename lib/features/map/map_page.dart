@@ -1,77 +1,80 @@
 import 'package:flutter/material.dart';
-import 'package:inforcom/features/map/my_map_page.dart';
+import 'package:inforcom/core/resources/app_icons.dart';
+import 'package:inforcom/core/widgets/bottom_sheet/app_bottom_sheet.dart';
+import 'package:inforcom/features/map/widgets/map_layout.dart';
+import 'package:inforcom/features/map/sheets/fuel_filters/fuel_filters_sheet.dart';
+import 'package:inforcom/features/map/sheets/route_building/route_building_sheet.dart';
+import 'package:inforcom/features/map/utils/zoom_controller.dart';
+import 'package:inforcom/features/map/widgets/buttons/action_button.dart';
+import 'package:inforcom/features/map/widgets/buttons/side_action_button.dart';
+import 'package:inforcom/features/map/widgets/buttons/traffic_toggle_button.dart';
+import 'package:yandex_maps_mapkit/mapkit.dart';
+import 'package:yandex_maps_mapkit/mapkit_factory.dart';
+import 'package:yandex_maps_mapkit/yandex_map.dart';
 
-class MapPage extends StatelessWidget {
+class MapPage extends StatefulWidget {
   const MapPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MyMapPage();
-  }
+  State<MapPage> createState() => _MapPageState();
 }
 
-// Column(
-    //   children: [
-    //     SizedBox(height: 100),
-    //     PrimaryButton(
-    //       title: 'Фильтры',
-    //       onPressed: () {
-    //         AppBottomSheet.showBottomSheet(
-    //           context,
-    //           child: const FuelFiltersSheet(),
-    //         );
-    //       },
-    //     ),
-    //     SizedBox(height: 16),
-    //     PrimaryButton(
-    //       title: 'Построить маршрут',
-    //       onPressed: () {
-    //         AppBottomSheet.showBottomSheet(
-    //           context,
-    //           isKeyboardOnTop: true,
-    //           child: const RouteBuildingSheet(),
-    //         );
-    //       },
-    //     ),
-    //     SizedBox(height: 16),
-    //     PrimaryButton(
-    //       title: 'Проложить маршрут',
-    //       onPressed: () {
-    //         AppBottomSheet.showBottomSheet(
-    //           context,
-    //           heightPercent: 0.42,
-    //           useRootNavigator: false,
-    //           isKeyboardOnTop: true,
-    //           child: const SelectedStationSheet(),
-    //         );
-    //       },
-    //     ),
-    //     SizedBox(height: 16),
-    //     PrimaryButton(
-    //       title: 'Геолокация',
-    //       onPressed: () {
-    //         AppDialog.showCustomDialog(
-    //           context: context,
-    //           widthPercent: 0.8,
-    //           child: GeolocationDialog(
-    //             title: 'Настройка геолокации',
-    //             text:
-    //                 'Включите геолокацию в настройках. Вы сможете строить маршруты',
-    //           ),
-    //         );
-    //       },
-    //     ),
-    //     SizedBox(height: 16),
-    //     PrimaryButton(
-    //       title: 'Карточка АЗС',
-    //       onPressed: () {
-    //         AppBottomSheet.showBottomSheet(
-    //           context,
-    //           heightPercent: 0.8,
-    //           useRootNavigator: false,
-    //           child: GasStationSheet(),
-    //         );
-    //       },
-    //     ),
-    //   ],
-    // );
+class _MapPageState extends State<MapPage> {
+  MapZoomController? _zoomController;
+
+  @override
+  Widget build(BuildContext context) {
+    return MapLayout(
+      map: YandexMap(
+        onMapCreated: (mapWindow) {
+          mapkit.onStart(); //!
+          mapWindow.map.move(
+            CameraPosition(
+              Point(latitude: 55.751225, longitude: 37.62954),
+              zoom: 15.0,
+              azimuth: 0,
+              tilt: 0,
+            ),
+          );
+          setState(() {
+            _zoomController = MapZoomController(mapWindow);
+          });
+        },
+      ),
+      sideButtons: [
+        SideActionButton(
+          iconName: AppIcons.plus,
+          onPressed: () => _zoomController?.zoomIn(),
+        ),
+        SideActionButton(
+          iconName: AppIcons.minus,
+          onPressed: () => _zoomController?.zoomOut(),
+        ),
+      ],
+      bottomButtons: [
+        ActionButton(
+          icon: AppIcons.filter,
+          onPressed: () {
+            AppBottomSheet.showBottomSheet(
+              context,
+              child: const FuelFiltersSheet(),
+            );
+          },
+        ),
+        const SizedBox(width: 4),
+        ActionButton(
+          icon: AppIcons.route,
+          onPressed: () {
+            AppBottomSheet.showBottomSheet(
+              context,
+              isKeyboardOnTop: true,
+              child: const RouteBuildingSheet(),
+            );
+          },
+        ),
+        Spacer(),
+        TrafficToggleButton(onPressed: () {}),
+      ],
+    );
+  }
+}

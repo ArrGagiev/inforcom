@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:inforcom/core/resources/app_colors.dart';
 
-class MapButton extends StatelessWidget {
-  const MapButton({super.key, required this.onPressed, required this.icon});
+class ActionButton extends StatelessWidget {
+  const ActionButton({super.key, required this.icon, required this.onPressed});
 
-  final void Function()? onPressed;
   final String icon;
+  final void Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
