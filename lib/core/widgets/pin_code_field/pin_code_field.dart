@@ -15,11 +15,11 @@ class PinCodeField extends StatefulWidget {
 class _PinCodeFieldState extends State<PinCodeField> {
   TextEditingController controller = TextEditingController();
 
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   controller.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class _PinCodeFieldState extends State<PinCodeField> {
       enableActiveFill: true,
       cursorColor: AppColors.accent2,
       keyboardType: TextInputType.number,
-      controller: controller,
+      // controller: controller,
       // obscureText: false,
       length: widget.length,
       textStyle: AppTextStyles.body2,

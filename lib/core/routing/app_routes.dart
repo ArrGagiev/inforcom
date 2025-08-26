@@ -1,4 +1,6 @@
 class AppRoutes {
+  static const String splash = '/splash';
+
   static const String main = '/main';
   static const String map = '/map';
   static const String promo = '/promo';
