@@ -3,6 +3,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
 
 
     <application
@@ -10,9 +12,6 @@
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
 
-        <meta-data
-            android:name="com.yandex.mapkit.API_KEY"
-            android:value="ecde1cf6-a396-4263-ad65-4a7b3914b363" />
 
         <activity
             android:name=".MainActivity"
@@ -41,6 +40,10 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+            <service
+            android:name="com.baseflow.geolocator.location.FlutterLocationService"
+            android:exported="false" />
 
             
     </application>
