@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:inforcom/core/resources/app_colors.dart';
 import 'package:inforcom/core/resources/app_text_styles.dart';
 import 'package:inforcom/core/widgets/buttons/text_button.dart';
@@ -40,7 +41,13 @@ class GeolocationDialog extends StatelessWidget {
               ),
               SizedBox(
                 width: 110,
-                child: PrimaryTextButton(title: 'Включить', onPressed: () {}),
+                child: PrimaryTextButton(
+                  title: 'Включить',
+                  onPressed: () async {
+                    Navigator.pop(context);
+                    await Geolocator.openLocationSettings();
+                  },
+                ),
               ),
             ],
           ),

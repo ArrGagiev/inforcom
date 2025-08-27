@@ -60,20 +60,20 @@ class AppIcons {
   static const _mapIcons = 'assets/map_icons';
 
   // Метки поумолчанию
-  static const mapDefault = '$_mapIcons/map_icon_default.svg';
-  static const mapDefaultM = '$_mapIcons/map_icon_default_m.svg';
+  static const mapDefault = '$_mapIcons/map_icon_default.png';
+  static const mapDefaultM = '$_mapIcons/map_icon_default_m.png';
 
   // Средний тариф
-  static const mapAffordable = '$_mapIcons/map_icon_affordable.svg';
-  static const mapAffordableM = '$_mapIcons/map_icon_affordable_m.svg';
+  static const mapAffordable = '$_mapIcons/map_icon_affordable.png';
+  static const mapAffordableM = '$_mapIcons/map_icon_affordable_m.png';
 
   // Дешевый тариф
-  static const mapCheap = '$_mapIcons/map_icon_cheap.svg';
-  static const mapCheapM = '$_mapIcons/map_icon_cheap_m.svg';
+  static const mapCheap = '$_mapIcons/map_icon_cheap.png';
+  static const mapCheapM = '$_mapIcons/map_icon_cheap_m.png';
 
   // Дорогий тариф
-  static const mapExpensive = '$_mapIcons/map_icon_expensive.svg';
-  static const mapExpensiveM = '$_mapIcons/map_icon_expensive_m.svg';
+  static const mapExpensive = '$_mapIcons/map_icon_expensive.png';
+  static const mapExpensiveM = '$_mapIcons/map_icon_expensive_m.png';
 
-  static const mapPoint = '$_mapIcons/map_icon_point.svg';
+  static const mapPoint = '$_mapIcons/map_icon_point.png';
 }

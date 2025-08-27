@@ -96,6 +96,8 @@ import 'package:flutter/material.dart' hide ImageProvider;
 import 'package:geolocator/geolocator.dart';
 import 'package:inforcom/core/resources/app_icons.dart';
 import 'package:inforcom/core/widgets/bottom_sheet/app_bottom_sheet.dart';
+import 'package:inforcom/core/widgets/dialog/dialog.dart';
+import 'package:inforcom/features/map/sheets/route_building/geolocation_dialog.dart';
 import 'package:inforcom/features/map/widgets/map_layout.dart';
 import 'package:inforcom/features/map/sheets/fuel_filters/fuel_filters_sheet.dart';
 import 'package:inforcom/features/map/sheets/route_building/route_building_sheet.dart';
@@ -159,7 +161,7 @@ class _MapPageState extends State<MapPage> {
     // Если хочешь, можно раскомментировать этот блок
     if (_userPlacemark == null) {
       final imageProvider = ImageProvider.fromImageProvider(
-        const AssetImage(AppIcons.trafficOn),
+        const AssetImage(AppIcons.mapPoint),
       );
       _userPlacemark = _mapWindow!.map.mapObjects.addPlacemark()
         ..geometry = point
@@ -172,24 +174,12 @@ class _MapPageState extends State<MapPage> {
   }
 
   void _showLocationDialog() {
-    showDialog(
+    AppDialog.showCustomDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text("Геолокация"),
-        content: const Text("Геолокация отключена или запрещена. Включить её?"),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text("Отменить"),
-          ),
-          TextButton(
-            onPressed: () async {
-              Navigator.pop(context);
-              await Geolocator.openLocationSettings();
-            },
-            child: const Text("Включить"),
-          ),
-        ],
+      widthPercent: 0.8,
+      child: GeolocationDialog(
+        title: 'Настройка геолокации',
+        text: 'Включите геолокацию в настройках. Вы сможете строить маршруты.',
       ),
     );
   }
