@@ -1,97 +1,4 @@
-// import 'package:flutter/material.dart' hide ImageProvider;
-// import 'package:inforcom/core/resources/app_icons.dart';
-// import 'package:inforcom/core/widgets/bottom_sheet/app_bottom_sheet.dart';
-// import 'package:inforcom/features/map/widgets/map_layout.dart';
-// import 'package:inforcom/features/map/sheets/fuel_filters/fuel_filters_sheet.dart';
-// import 'package:inforcom/features/map/sheets/route_building/route_building_sheet.dart';
-// import 'package:inforcom/features/map/utils/zoom_controller.dart';
-// import 'package:inforcom/features/map/widgets/buttons/action_button.dart';
-// import 'package:inforcom/features/map/widgets/buttons/side_action_button.dart';
-// import 'package:inforcom/features/map/widgets/buttons/traffic_toggle_button.dart';
-// import 'package:yandex_maps_mapkit/mapkit.dart';
-// import 'package:yandex_maps_mapkit/mapkit_factory.dart';
-// import 'package:yandex_maps_mapkit/yandex_map.dart';
-// import 'package:yandex_maps_mapkit/image.dart';
-
-// class MapPage extends StatefulWidget {
-//   const MapPage({super.key});
-
-//   @override
-//   State<MapPage> createState() => _MapPageState();
-// }
-
-// class _MapPageState extends State<MapPage> {
-//   MapZoomController? _zoomController;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MapLayout(
-//       map: YandexMap(
-//         onMapCreated: (mapWindow) {
-//           mapkit.onStart(); //!
-//           mapWindow.map.move(
-//             CameraPosition(
-//               Point(latitude: 55.751225, longitude: 37.62954),
-//               zoom: 15.0,
-//               azimuth: 0,
-//               tilt: 0,
-//             ),
-//           );
-//           setState(() {
-//             _zoomController = MapZoomController(mapWindow);
-//           });
-
-//           final imageProvider = ImageProvider.fromImageProvider(
-//             const AssetImage(AppIcons.trafficOn),
-//           );
-
-//           final placemark = mapWindow.map.mapObjects.addPlacemark()
-//             ..geometry = const Point(latitude: 55.751225, longitude: 37.62954)
-//             ..setIcon(imageProvider);
-
-//           placemark.setIconStyle(IconStyle(scale: 2.5)); // Размер
-//         },
-//       ),
-//       sideButtons: [
-//         SideActionButton(
-//           iconName: AppIcons.plus,
-//           onPressed: () => _zoomController?.zoomIn(),
-//         ),
-//         SideActionButton(
-//           iconName: AppIcons.minus,
-//           onPressed: () => _zoomController?.zoomOut(),
-//         ),
-//       ],
-//       bottomButtons: [
-//         ActionButton(
-//           icon: AppIcons.filter,
-//           onPressed: () {
-//             AppBottomSheet.showBottomSheet(
-//               context,
-//               child: const FuelFiltersSheet(),
-//             );
-//           },
-//         ),
-//         const SizedBox(width: 4),
-//         ActionButton(
-//           icon: AppIcons.route,
-//           onPressed: () {
-//             AppBottomSheet.showBottomSheet(
-//               context,
-//               isKeyboardOnTop: true,
-//               child: const RouteBuildingSheet(),
-//             );
-//           },
-//         ),
-//         Spacer(),
-//         TrafficToggleButton(onPressed: () {}),
-//       ],
-//     );
-//   }
-// }
-
 import 'dart:developer';
-
 import 'package:flutter/material.dart' hide ImageProvider;
 import 'package:geolocator/geolocator.dart';
 import 'package:inforcom/core/resources/app_icons.dart';
@@ -158,7 +65,6 @@ class _MapPageState extends State<MapPage> {
     );
 
     // Добавляем или обновляем метку
-    // Если хочешь, можно раскомментировать этот блок
     if (_userPlacemark == null) {
       final imageProvider = ImageProvider.fromImageProvider(
         const AssetImage(AppIcons.mapPoint),
@@ -177,10 +83,7 @@ class _MapPageState extends State<MapPage> {
     AppDialog.showCustomDialog(
       context: context,
       widthPercent: 0.8,
-      child: GeolocationDialog(
-        title: 'Настройка геолокации',
-        text: 'Включите геолокацию в настройках. Вы сможете строить маршруты.',
-      ),
+      child: GeolocationDialog(),
     );
   }
 
@@ -192,7 +95,7 @@ class _MapPageState extends State<MapPage> {
           mapkit.onStart();
           _mapWindow = mapWindow;
 
-          // стартовая позиция — Москва
+          // стартовая позиция — Мск
           mapWindow.map.move(
             CameraPosition(
               const Point(latitude: 55.751225, longitude: 37.62954),

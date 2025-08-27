@@ -5,10 +5,7 @@ import 'package:inforcom/core/resources/app_text_styles.dart';
 import 'package:inforcom/core/widgets/buttons/text_button.dart';
 
 class GeolocationDialog extends StatelessWidget {
-  const GeolocationDialog({super.key, required this.title, required this.text});
-
-  final String title;
-  final String text;
+  const GeolocationDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,12 +16,12 @@ class GeolocationDialog extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            title,
+            'Настройка геолокации',
             style: AppTextStyles.h3.copyWith(color: AppColors.primaryText),
           ),
           const SizedBox(height: 16),
           Text(
-            text,
+            'Включите геолокацию в настройках. Вы сможете строить маршруты.',
             style: AppTextStyles.body3.copyWith(color: AppColors.secondaryText),
           ),
           const SizedBox(height: 16),
@@ -45,6 +42,7 @@ class GeolocationDialog extends StatelessWidget {
                   title: 'Включить',
                   onPressed: () async {
                     Navigator.pop(context);
+                    // Запрос включения геолокации
                     await Geolocator.openLocationSettings();
                   },
                 ),
