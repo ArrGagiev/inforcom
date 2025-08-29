@@ -2,48 +2,33 @@ import 'package:inforcom/core/resources/app_colors.dart';
 import 'package:inforcom/core/resources/app_text_styles.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer';
 
-class PinCodeField extends StatefulWidget {
-  const PinCodeField({super.key, required this.length});
+class PinCodeField extends StatelessWidget {
+  const PinCodeField({super.key, required this.length, this.controller});
   final int length;
-
-  @override
-  State<PinCodeField> createState() => _PinCodeFieldState();
-}
-
-class _PinCodeFieldState extends State<PinCodeField> {
-  TextEditingController controller = TextEditingController();
-
-  // @override
-  // void dispose() {
-  //   controller.dispose();
-  //   super.dispose();
-  // }
+  final TextEditingController? controller;
 
   @override
   Widget build(BuildContext context) {
-    // var verifyBloc = context.read<VerifyCodeBloc>();
     return PinCodeTextField(
       mainAxisAlignment: MainAxisAlignment.center,
       enableActiveFill: true,
       cursorColor: AppColors.accent2,
       keyboardType: TextInputType.number,
-      // controller: controller,
+      controller: controller,
       // obscureText: false,
-      length: widget.length,
+      length: length,
       textStyle: AppTextStyles.body2,
       animationType: AnimationType.fade,
       animationDuration: const Duration(milliseconds: 200),
       appContext: context,
       pinTheme: _pinTheme,
-      onCompleted: (value) {
-        log(value);
-        // verifyBloc.add(VerifyCode(code: value));
-      },
-      onChanged: (value) {
-        log(value);
-      },
+      // onCompleted: (value) {
+      //   log(value);
+      // },
+      // onChanged: (value) {
+      //   log(value);
+      // },
     );
   }
 }
