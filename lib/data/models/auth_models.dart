@@ -1,3 +1,5 @@
+import 'package:inforcom/core/services/mask_formatter.dart';
+
 class LoginStep1Request {
   final String phone;
   final String cardno;
@@ -10,8 +12,8 @@ class LoginStep1Request {
   });
 
   Map<String, dynamic> toJson() => {
-    'phone': phone,
-    'cardno': cardno,
+    'phone': MaskFormatter.getCleanPhoneNumber(phone),
+    'cardno': MaskFormatter.getCleanCardNumber(cardno),
     'pin': pin,
   };
 }

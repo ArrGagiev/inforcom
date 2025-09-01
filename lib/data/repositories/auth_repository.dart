@@ -53,7 +53,6 @@ class AuthRepository {
       log('Error status: ${error.response?.statusCode}');
       throw ApiService.handleError(error);
     } catch (e) {
-      log('Unknown error in loginStep2: $e');
       throw Exception('Неизвестная ошибка: $e');
     }
   }

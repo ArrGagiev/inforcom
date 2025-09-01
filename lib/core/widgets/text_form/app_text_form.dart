@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -42,9 +41,9 @@ class AppTextForm extends StatelessWidget {
       onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
       style: AppTextStyles.body2,
       decoration: _buildDecoration(context),
-      onChanged: (text) {
-        log(text);
-      },
+      // onChanged: (text) {
+      //   log(text);
+      // },
     );
   }
 
@@ -54,8 +53,6 @@ class AppTextForm extends StatelessWidget {
         return [MaskFormatter.phoneNumber];
       case ValidationType.cardNumber:
         return [MaskFormatter.cardNumber];
-      case ValidationType.cardCode:
-        return [MaskFormatter.cardCode];
       default:
         return null;
     }

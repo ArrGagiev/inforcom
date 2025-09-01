@@ -93,6 +93,7 @@ class _AuthSheetState extends State<AuthSheet> {
               SizedBox(height: 8),
               AppTextForm(
                 labelText: 'Номер телефона',
+                type: ValidationType.phoneNumber,
                 controller: _phoneController,
               ),
               SizedBox(height: 24),
@@ -112,6 +113,7 @@ class _AuthSheetState extends State<AuthSheet> {
               SizedBox(height: 8),
               AppTextForm(
                 labelText: 'Номер карты',
+                type: ValidationType.cardNumber,
                 controller: _cardnoController,
               ),
               SizedBox(height: 16),
