@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:inforcom/blocs/auth_bloc/auth_bloc.dart';
 import 'package:inforcom/core/resources/app_colors.dart';
 import 'package:inforcom/core/resources/app_icons.dart';
 import 'package:inforcom/core/resources/app_text_styles.dart';
@@ -13,14 +15,17 @@ import 'package:inforcom/features/profile/widgets/sign_out_button.dart';
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
-  static final _titleStyle = 
-  AppTextStyles.h3.copyWith(color: AppColors.primaryText);
+  static final _titleStyle = AppTextStyles.h3.copyWith(
+    color: AppColors.primaryText,
+  );
 
-  static final _secondaryTextStyle = 
-  AppTextStyles.body1.copyWith(color: AppColors.secondaryText);
+  static final _secondaryTextStyle = AppTextStyles.body1.copyWith(
+    color: AppColors.secondaryText,
+  );
 
-  static final _primaryTextStyle = 
-  AppTextStyles.body1.copyWith(color: AppColors.primaryText);
+  static final _primaryTextStyle = AppTextStyles.body1.copyWith(
+    color: AppColors.primaryText,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +35,21 @@ class ProfilePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 44),
-            SignOutButton(onTap: () {}),
+            const SizedBox(height: 54),
+            BlocConsumer<AuthBloc, AuthState>(
+              listener: (context, state) {
+                // if (state is AuthUnauthenticated) {
+                //   context.go(AppRoutes.main);
+                // }
+              },
+              builder: (context, state) {
+                return SignOutButton(
+                  onTap: state is AuthLoading
+                      ? null
+                      : () => context.read<AuthBloc>().add(LogoutRequested()),
+                );
+              },
+            ),
             const SizedBox(height: 24),
             const InforcomCard(cardNumber: '1234 5678 9012 3456'),
             const SizedBox(height: 16),

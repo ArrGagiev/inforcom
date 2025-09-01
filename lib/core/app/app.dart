@@ -3,16 +3,16 @@ import 'package:inforcom/core/routing/app_router.dart';
 import 'package:inforcom/core/resources/app_colors.dart';
 
 class App extends StatelessWidget {
-  const App({super.key});
+  const App({super.key, required this.isAuthenticated});
 
-  final bool isAuth = true;
+  final bool isAuthenticated;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
       theme: ThemeData(scaffoldBackgroundColor: AppColors.primary),
       debugShowCheckedModeBanner: false,
-      routerConfig: appRouter,
+      routerConfig: appRouter(isAuthenticated),
     );
   }
 }

@@ -17,22 +17,13 @@ class SupportPage extends StatelessWidget {
           onMapCreated: (mapWindow) {
             debugPrint('Map created!');
             mapkit.onStart();
-            // mapWindow.map.move(
-            //   CameraPosition(
-            //     Point(latitude: 55.751225, longitude: 37.62954),
-            //     zoom: 15.0,
-            //     azimuth: 0,
-            //     tilt: 0,
-            //   ),
-            // );
-            mapWindow.map.moveWithAnimation(
+            mapWindow.map.move(
               CameraPosition(
                 Point(latitude: 55.751225, longitude: 37.62954),
                 zoom: 15.0,
                 azimuth: 0,
                 tilt: 0,
               ),
-              Animation(AnimationType.Smooth, duration: 7),
             );
           },
         ),
