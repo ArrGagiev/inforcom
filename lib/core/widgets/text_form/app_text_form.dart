@@ -15,6 +15,7 @@ class AppTextForm extends StatelessWidget {
     this.type,
     this.controller,
     this.enabled = true,
+    this.validator,
     //-----------------------------┐
     // Для управления из BLoC
     this.showInfoIcon = false,
@@ -26,6 +27,7 @@ class AppTextForm extends StatelessWidget {
   final ValidationType? type;
   final String labelText;
   final TextEditingController? controller;
+  final FormFieldValidator<String>? validator;
   final bool enabled;
   final bool showInfoIcon;
   final bool showSearchIcon;
@@ -41,6 +43,7 @@ class AppTextForm extends StatelessWidget {
       onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
       style: AppTextStyles.body2,
       decoration: _buildDecoration(context),
+      validator: validator,
       // onChanged: (text) {
       //   log(text);
       // },

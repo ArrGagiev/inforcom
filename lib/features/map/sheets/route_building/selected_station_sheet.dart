@@ -3,7 +3,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:inforcom/core/resources/app_colors.dart';
 import 'package:inforcom/core/resources/app_icons.dart';
 import 'package:inforcom/core/resources/app_text_styles.dart';
+import 'package:inforcom/core/widgets/bottom_sheet/app_bottom_sheet.dart';
 import 'package:inforcom/core/widgets/buttons/primary_button.dart';
+import 'package:inforcom/features/map/sheets/gas_station/gas_station_sheet.dart';
 
 class SelectedStationSheet extends StatelessWidget {
   const SelectedStationSheet({super.key});
@@ -64,7 +66,17 @@ class SelectedStationSheet extends StatelessWidget {
           ],
         ),
         SizedBox(height: 24),
-        PrimaryButton(title: 'Проложить маршрут', onPressed: () {}),
+        PrimaryButton(
+          title: 'Проложить маршрут',
+          onPressed: () {
+            Navigator.pop(context);
+            AppBottomSheet.showBottomSheet(
+              context,
+              isKeyboardOnTop: true,
+              child: const GasStationSheet(),
+            );
+          },
+        ),
       ],
     );
   }

@@ -4,31 +4,62 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:flutter/material.dart';
 
 class PinCodeField extends StatelessWidget {
-  const PinCodeField({super.key, required this.length, this.controller});
+  const PinCodeField({
+    super.key,
+    required this.length,
+    this.controller,
+    this.validator,
+  });
   final int length;
   final TextEditingController? controller;
+  final FormFieldValidator<String>? validator;
 
   @override
   Widget build(BuildContext context) {
-    return PinCodeTextField(
-      mainAxisAlignment: MainAxisAlignment.center,
-      enableActiveFill: true,
-      cursorColor: AppColors.accent2,
-      keyboardType: TextInputType.number,
-      controller: controller,
-      // obscureText: false,
-      length: length,
-      textStyle: AppTextStyles.body2,
-      animationType: AnimationType.fade,
-      animationDuration: const Duration(milliseconds: 200),
-      appContext: context,
-      pinTheme: _pinTheme,
-      // onCompleted: (value) {
-      //   log(value);
-      // },
-      // onChanged: (value) {
-      //   log(value);
-      // },
+    return FormField<String>(
+      validator: validator,
+      builder: (formFieldState) {
+        return Column(
+          children: [
+            PinCodeTextField(
+              mainAxisAlignment: MainAxisAlignment.center,
+              enableActiveFill: true,
+              cursorColor: AppColors.accent2,
+              keyboardType: TextInputType.number,
+              controller: controller,
+              length: length,
+              textStyle: AppTextStyles.body2,
+              animationType: AnimationType.fade,
+              animationDuration: const Duration(milliseconds: 200),
+              appContext: context,
+              pinTheme: _pinTheme,
+              onChanged: (value) {
+                // Если ввели все цифры, убираем ошибку
+                if (value.length == length) {
+                  formFieldState
+                    ..didChange(value)
+                    ..validate();
+                } else {
+                  formFieldState.validate();
+                }
+              },
+              onCompleted: (value) {
+                formFieldState
+                  ..didChange(value)
+                  ..validate();
+              },
+            ),
+
+            // Кастомное отображение ошибки по центру
+            formFieldState.hasError
+                ? Text(
+                    formFieldState.errorText!,
+                    style: AppTextStyles.body3.copyWith(color: AppColors.red),
+                  )
+                : const SizedBox.shrink(),
+          ],
+        );
+      },
     );
   }
 }

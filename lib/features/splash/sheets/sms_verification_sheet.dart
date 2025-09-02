@@ -30,6 +30,7 @@ class SmsVerificationSheet extends StatefulWidget {
 
 class _SmsVerificationSheetState extends State<SmsVerificationSheet> {
   final _smsController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -75,61 +76,70 @@ class _SmsVerificationSheetState extends State<SmsVerificationSheet> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InkWell(
-                  onTap: () => Navigator.pop(context),
-                  child: SvgPicture.asset(
-                    width: 20,
-                    AppIcons.backArrow,
-                    colorFilter: ColorFilter.mode(
-                      AppColors.secondaryText,
-                      BlendMode.srcIn,
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                    onTap: () => Navigator.pop(context),
+                    child: SvgPicture.asset(
+                      width: 20,
+                      AppIcons.backArrow,
+                      colorFilter: ColorFilter.mode(
+                        AppColors.secondaryText,
+                        BlendMode.srcIn,
+                      ),
                     ),
                   ),
-                ),
-                Text(
-                  'Ввод кода',
-                  style: AppTextStyles.title1.copyWith(
-                    color: AppColors.primaryText,
-                  ),
-                ),
-                InkWell(
-                  onTap: () => Navigator.pop(context),
-                  child: SvgPicture.asset(
-                    width: 20,
-                    AppIcons.close,
-                    colorFilter: ColorFilter.mode(
-                      AppColors.secondaryText,
-                      BlendMode.srcIn,
+                  Text(
+                    'Ввод кода',
+                    style: AppTextStyles.title1.copyWith(
+                      color: AppColors.primaryText,
                     ),
                   ),
+                  InkWell(
+                    onTap: () => Navigator.pop(context),
+                    child: SvgPicture.asset(
+                      width: 20,
+                      AppIcons.close,
+                      colorFilter: ColorFilter.mode(
+                        AppColors.secondaryText,
+                        BlendMode.srcIn,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 24),
+              Text(
+                'Введите код из СМС\nМы отправили код на номер ${widget.phoneNumber}',
+                style: AppTextStyles.body2.copyWith(
+                  color: AppColors.primaryText,
                 ),
-              ],
-            ),
-            SizedBox(height: 24),
-            Text(
-              'Введите код из СМС\nМы отправили код на номер ${widget.phoneNumber}',
-              style: AppTextStyles.body2.copyWith(color: AppColors.primaryText),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 8),
-            PinCodeField(length: 4, controller: _smsController),
-            SizedBox(height: 24),
-            BlocBuilder<AuthBloc, AuthState>(
-              builder: (context, state) {
-                final isLoading = state is AuthLoading;
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 8),
+              PinCodeField(
+                length: 4,
+                controller: _smsController,
+                validator: validatePinCode,
+              ),
+              SizedBox(height: 24),
+              BlocBuilder<AuthBloc, AuthState>(
+                builder: (context, state) {
+                  final isLoading = state is AuthLoading;
 
-                return PrimaryButton(
-                  title: isLoading ? 'Отправка...' : 'Подтвердить',
-                  onPressed: isLoading ? null : () => _submitCode(context),
-                );
-              },
-            ),
-          ],
+                  return PrimaryButton(
+                    title: isLoading ? 'Отправка...' : 'Подтвердить',
+                    onPressed: isLoading ? null : () => _submitCode(context),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -155,9 +165,13 @@ class _SmsVerificationSheetState extends State<SmsVerificationSheet> {
 
     context.read<AuthBloc>().add(LoginStep2Requested(request: request));
   }
+}
 
-  // void _handleSuccess(BuildContext context, String accessToken) async {
-  //   // Сохраняем токен
-  //   await SecureStorageService.saveAccessToken(accessToken);
-  // }
+// Валидация пинкода
+String? validatePinCode(String? value) {
+  if (value == null || value.isEmpty || value.length < 4) {
+    return 'Заполните поле';
+  }
+
+  return null;
 }

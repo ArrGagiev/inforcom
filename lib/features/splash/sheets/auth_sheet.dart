@@ -25,6 +25,7 @@ class _AuthSheetState extends State<AuthSheet> {
   final _phoneController = TextEditingController();
   final _cardnoController = TextEditingController();
   final _pinController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -55,101 +56,113 @@ class _AuthSheetState extends State<AuthSheet> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  Text(
-                    'Ввод номера',
-                    style: AppTextStyles.title1.copyWith(
-                      color: AppColors.primaryText,
+          child: Form(
+            key: _formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            child: Column(
+              children: [
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Text(
+                      'Ввод номера',
+                      style: AppTextStyles.title1.copyWith(
+                        color: AppColors.primaryText,
+                      ),
                     ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: InkWell(
-                      onTap: () => Navigator.pop(context),
-                      child: SvgPicture.asset(
-                        width: 20,
-                        AppIcons.close,
-                        colorFilter: ColorFilter.mode(
-                          AppColors.secondaryText,
-                          BlendMode.srcIn,
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: InkWell(
+                        onTap: () => Navigator.pop(context),
+                        child: SvgPicture.asset(
+                          width: 20,
+                          AppIcons.close,
+                          colorFilter: ColorFilter.mode(
+                            AppColors.secondaryText,
+                            BlendMode.srcIn,
+                          ),
                         ),
                       ),
                     ),
+                  ],
+                ),
+                SizedBox(height: 24),
+                Text(
+                  'Введите ваш номер телефона,чтобы получить код для подтверждения.',
+                  style: AppTextStyles.body2.copyWith(
+                    color: AppColors.primaryText,
                   ),
-                ],
-              ),
-              SizedBox(height: 24),
-              Text(
-                'Введите ваш номер телефона,чтобы получить код для подтверждения.',
-                style: AppTextStyles.body2.copyWith(
-                  color: AppColors.primaryText,
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 8),
-              AppTextForm(
-                labelText: 'Номер телефона',
-                type: ValidationType.phoneNumber,
-                controller: _phoneController,
-              ),
-              SizedBox(height: 24),
-              Text(
-                'Ввод данных карты',
-                style: AppTextStyles.title1.copyWith(
-                  color: AppColors.primaryText,
+                SizedBox(height: 8),
+                AppTextForm(
+                  labelText: 'Номер телефона',
+                  type: ValidationType.phoneNumber,
+                  controller: _phoneController,
+                  validator: validatePhoneNumber,
                 ),
-              ),
-              SizedBox(height: 16),
-              Text(
-                'Введите номер карты',
-                style: AppTextStyles.body2.copyWith(
-                  color: AppColors.primaryText,
+                SizedBox(height: 24),
+                Text(
+                  'Ввод данных карты',
+                  style: AppTextStyles.title1.copyWith(
+                    color: AppColors.primaryText,
+                  ),
                 ),
-              ),
-              SizedBox(height: 8),
-              AppTextForm(
-                labelText: 'Номер карты',
-                type: ValidationType.cardNumber,
-                controller: _cardnoController,
-              ),
-              SizedBox(height: 16),
-              Text(
-                'Введите ПИН-код карты',
-                style: AppTextStyles.body2.copyWith(
-                  color: AppColors.primaryText,
+                SizedBox(height: 16),
+                Text(
+                  'Введите номер карты',
+                  style: AppTextStyles.body2.copyWith(
+                    color: AppColors.primaryText,
+                  ),
                 ),
-              ),
-              SizedBox(height: 8),
-              PinCodeField(length: 4, controller: _pinController),
-              SizedBox(height: 24),
-              BlocBuilder<AuthBloc, AuthState>(
-                builder: (context, state) {
-                  return PrimaryButton(
-                    title: state is AuthLoading
-                        ? 'Отправка...'
-                        : 'Получить код',
-                    onPressed: state is AuthLoading
-                        ? null
-                        : () {
-                            final request = LoginStep1Request(
-                              phone: _phoneController.text,
-                              cardno: _cardnoController.text,
-                              pin: _pinController.text,
-                            );
-                            context.read<AuthBloc>().add(
-                              LoginStep1Requested(request: request),
-                            );
-                          },
-                  );
-                },
-              ),
-              SizedBox(height: 16),
-              PrivacyAgreementText(),
-            ],
+                SizedBox(height: 8),
+                AppTextForm(
+                  labelText: 'Номер карты',
+                  type: ValidationType.cardNumber,
+                  controller: _cardnoController,
+                  validator: validateCardNumber,
+                ),
+                SizedBox(height: 16),
+                Text(
+                  'Введите ПИН-код карты',
+                  style: AppTextStyles.body2.copyWith(
+                    color: AppColors.primaryText,
+                  ),
+                ),
+                SizedBox(height: 8),
+                PinCodeField(
+                  length: 4,
+                  controller: _pinController,
+                  validator: validatePinCode,
+                ),
+                SizedBox(height: 24),
+                BlocBuilder<AuthBloc, AuthState>(
+                  builder: (context, state) {
+                    return PrimaryButton(
+                      title: state is AuthLoading
+                          ? 'Отправка...'
+                          : 'Получить код',
+                      onPressed: state is AuthLoading
+                          ? null
+                          : () {
+                              if (_formKey.currentState!.validate()) {
+                                final request = LoginStep1Request(
+                                  phone: _phoneController.text,
+                                  cardno: _cardnoController.text,
+                                  pin: _pinController.text,
+                                );
+                                context.read<AuthBloc>().add(
+                                  LoginStep1Requested(request: request),
+                                );
+                              }
+                            },
+                    );
+                  },
+                ),
+                SizedBox(height: 16),
+                PrivacyAgreementText(),
+              ],
+            ),
           ),
         ),
       ),
@@ -195,4 +208,31 @@ class PrivacyAgreementText extends StatelessWidget {
       ),
     );
   }
+}
+
+// Валидация номера
+String? validatePhoneNumber(String? value) {
+  if (value == null || value.isEmpty || value.length < 16) {
+    return 'Введите номер телефона';
+  }
+
+  return null;
+}
+
+// Валидация карты
+String? validateCardNumber(String? value) {
+  if (value == null || value.isEmpty || value.length < 19) {
+    return 'Заполните поле';
+  }
+
+  return null;
+}
+
+// Валидация пинкода
+String? validatePinCode(String? value) {
+  if (value == null || value.isEmpty || value.length < 4) {
+    return 'Заполните поле';
+  }
+
+  return null;
 }
