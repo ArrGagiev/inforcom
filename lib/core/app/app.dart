@@ -10,7 +10,12 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      theme: ThemeData(scaffoldBackgroundColor: AppColors.primary),
+      theme: ThemeData(
+        scaffoldBackgroundColor: AppColors.primary,
+        progressIndicatorTheme: const ProgressIndicatorThemeData(
+          color: AppColors.primary,
+        ),
+      ),
       debugShowCheckedModeBanner: false,
       routerConfig: appRouter(isAuthenticated),
     );

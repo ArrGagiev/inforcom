@@ -1,18 +1,18 @@
 import 'dart:developer';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:inforcom/blocs/auth_bloc/auth_bloc.dart';
 import 'package:inforcom/core/resources/app_colors.dart';
-import 'package:inforcom/core/resources/app_icons.dart';
 import 'package:inforcom/core/resources/app_text_styles.dart';
 import 'package:inforcom/core/widgets/bottom_sheet/app_bottom_sheet.dart';
 import 'package:inforcom/core/widgets/buttons/primary_button.dart';
 import 'package:inforcom/core/widgets/pin_code_field/pin_code_field.dart';
 import 'package:inforcom/core/widgets/text_form/app_text_form.dart';
 import 'package:inforcom/data/models/auth_models.dart';
+import 'package:inforcom/features/splash/sheets/services/validation_service.dart';
 import 'package:inforcom/features/splash/sheets/sms_verification_sheet.dart';
+import 'package:inforcom/features/splash/sheets/widgets/close_icon_button.dart';
+import 'package:inforcom/features/splash/sheets/widgets/privacy_agreement_text.dart';
 
 class AuthSheet extends StatefulWidget {
   const AuthSheet({super.key});
@@ -72,17 +72,7 @@ class _AuthSheetState extends State<AuthSheet> {
                     ),
                     Align(
                       alignment: Alignment.centerRight,
-                      child: InkWell(
-                        onTap: () => Navigator.pop(context),
-                        child: SvgPicture.asset(
-                          width: 20,
-                          AppIcons.close,
-                          colorFilter: ColorFilter.mode(
-                            AppColors.secondaryText,
-                            BlendMode.srcIn,
-                          ),
-                        ),
-                      ),
+                      child: CloseIconButton(),
                     ),
                   ],
                 ),
@@ -99,7 +89,7 @@ class _AuthSheetState extends State<AuthSheet> {
                   labelText: 'Номер телефона',
                   type: ValidationType.phoneNumber,
                   controller: _phoneController,
-                  validator: validatePhoneNumber,
+                  validator: ValidationService.validatePhoneNumber,
                 ),
                 SizedBox(height: 24),
                 Text(
@@ -120,7 +110,7 @@ class _AuthSheetState extends State<AuthSheet> {
                   labelText: 'Номер карты',
                   type: ValidationType.cardNumber,
                   controller: _cardnoController,
-                  validator: validateCardNumber,
+                  validator: ValidationService.validateCardNumber,
                 ),
                 SizedBox(height: 16),
                 Text(
@@ -133,29 +123,17 @@ class _AuthSheetState extends State<AuthSheet> {
                 PinCodeField(
                   length: 4,
                   controller: _pinController,
-                  validator: validatePinCode,
+                  validator: ValidationService.validatePinCode,
                 ),
                 SizedBox(height: 24),
                 BlocBuilder<AuthBloc, AuthState>(
                   builder: (context, state) {
                     return PrimaryButton(
-                      title: state is AuthLoading
-                          ? 'Отправка...'
-                          : 'Получить код',
-                      onPressed: state is AuthLoading
-                          ? null
-                          : () {
-                              if (_formKey.currentState!.validate()) {
-                                final request = LoginStep1Request(
-                                  phone: _phoneController.text,
-                                  cardno: _cardnoController.text,
-                                  pin: _pinController.text,
-                                );
-                                context.read<AuthBloc>().add(
-                                  LoginStep1Requested(request: request),
-                                );
-                              }
-                            },
+                      iconWidget: state is AuthLoading
+                          ? CircularProgressIndicator()
+                          : null,
+                      title: 'Получить код',
+                      onPressed: state is AuthLoading ? null : _submitForm,
                     );
                   },
                 ),
@@ -168,71 +146,15 @@ class _AuthSheetState extends State<AuthSheet> {
       ),
     );
   }
-}
 
-class PrivacyAgreementText extends StatelessWidget {
-  const PrivacyAgreementText({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return RichText(
-      textAlign: TextAlign.center,
-      text: TextSpan(
-        style: AppTextStyles.body2.copyWith(color: AppColors.primaryText),
-        children: [
-          const TextSpan(text: 'Авторизуясь, вы соглашаетесь c '),
-          TextSpan(
-            text: 'Политикой по обработке персональных данных',
-            style: AppTextStyles.body2.copyWith(
-              color: AppColors.accent,
-              decoration: TextDecoration.underline,
-            ),
-            recognizer: TapGestureRecognizer()
-              ..onTap = () {
-                log('Политика обработки данных');
-              },
-          ),
-          const TextSpan(text: ' и принимаете '),
-          TextSpan(
-            text: 'Пользовательское соглашение',
-            style: AppTextStyles.body2.copyWith(
-              color: AppColors.accent,
-              decoration: TextDecoration.underline,
-            ),
-            recognizer: TapGestureRecognizer()
-              ..onTap = () {
-                log('Пользовательское соглашение');
-              },
-          ),
-        ],
-      ),
-    );
+  void _submitForm() {
+    if (_formKey.currentState!.validate()) {
+      final request = LoginStep1Request(
+        phone: _phoneController.text,
+        cardno: _cardnoController.text,
+        pin: _pinController.text,
+      );
+      context.read<AuthBloc>().add(LoginStep1Requested(request: request));
+    }
   }
-}
-
-// Валидация номера
-String? validatePhoneNumber(String? value) {
-  if (value == null || value.isEmpty || value.length < 16) {
-    return 'Введите номер телефона';
-  }
-
-  return null;
-}
-
-// Валидация карты
-String? validateCardNumber(String? value) {
-  if (value == null || value.isEmpty || value.length < 19) {
-    return 'Заполните поле';
-  }
-
-  return null;
-}
-
-// Валидация пинкода
-String? validatePinCode(String? value) {
-  if (value == null || value.isEmpty || value.length < 4) {
-    return 'Заполните поле';
-  }
-
-  return null;
 }
