@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart' hide ImageProvider;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
@@ -7,6 +6,7 @@ import 'package:inforcom/core/resources/app_icons.dart';
 import 'package:inforcom/core/widgets/bottom_sheet/app_bottom_sheet.dart';
 import 'package:inforcom/core/widgets/dialog/dialog.dart';
 import 'package:inforcom/features/map/sheets/route_building/geolocation_dialog.dart';
+import 'package:inforcom/features/map/utils/cluster_service.dart';
 import 'package:inforcom/features/map/widgets/map_layout.dart';
 import 'package:inforcom/features/map/sheets/fuel_filters/fuel_filters_sheet.dart';
 import 'package:inforcom/features/map/sheets/route_building/route_building_sheet.dart';
@@ -30,8 +30,8 @@ class MapPage extends StatefulWidget {
 class _MapPageState extends State<MapPage> {
   MapZoomController? _zoomController;
   MapWindow? _mapWindow;
-
   PlacemarkMapObject? _userPlacemark;
+  final ClusterService _clusterService = ClusterService();
 
   // Запрос разрешения через permission_handler
   Future<bool> _requestLocationPermission() async {
@@ -54,14 +54,14 @@ class _MapPageState extends State<MapPage> {
       return;
     }
 
-    // Получаем позицию
+    // Получаем позицию пользователя
     final pos = await Geolocator.getCurrentPosition(
       locationSettings: const LocationSettings(accuracy: LocationAccuracy.high),
     );
 
     final point = Point(latitude: pos.latitude, longitude: pos.longitude);
 
-    // Перемещаем карту
+    // Перемещаем карту в позицию пользователя
     _mapWindow?.map.move(
       CameraPosition(point, zoom: 15.0, azimuth: 0, tilt: 0),
     );
@@ -75,7 +75,7 @@ class _MapPageState extends State<MapPage> {
         ..geometry = point
         ..setIcon(imageProvider);
 
-      _userPlacemark!.setIconStyle(IconStyle(scale: 2.5)); // Размер
+      _userPlacemark!.setIconStyle(IconStyle(scale: 1.8)); // Размер метки
     } else {
       _userPlacemark!.geometry = point;
     }
@@ -89,6 +89,30 @@ class _MapPageState extends State<MapPage> {
     );
   }
 
+  // TODO: Пример добавления тестовых точек для кластеризации
+  void _addTestPoints() {
+    final points = [
+      Point(latitude: 55.751225, longitude: 37.62954),
+      Point(latitude: 55.752, longitude: 37.63),
+      Point(latitude: 55.753, longitude: 37.631),
+      Point(latitude: 55.754, longitude: 37.632),
+      Point(latitude: 55.755, longitude: 37.633),
+      Point(latitude: 55.756, longitude: 37.634),
+    ];
+
+    _clusterService.addPoints(points);
+  }
+
+  @override
+  void dispose() {
+    _clusterService.dispose();
+    super.dispose();
+  }
+
+  //-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
@@ -100,16 +124,29 @@ class _MapPageState extends State<MapPage> {
               _mapWindow = mapWindow;
 
               // стартовая позиция — Мск
-              mapWindow.map.move(
-                CameraPosition(
-                  const Point(latitude: 55.751225, longitude: 37.62954),
-                  zoom: 15.0,
-                  azimuth: 0,
-                  tilt: 0,
-                ),
+              final point = Point(latitude: 55.751225, longitude: 37.62954);
+              // иконка местоположения
+              final imageProvider = ImageProvider.fromImageProvider(
+                const AssetImage(AppIcons.mapPoint),
               );
 
+              // стартовая позиция — Мск
+              mapWindow.map.move(
+                CameraPosition(point, zoom: 15.0, azimuth: 0, tilt: 0),
+              );
+              _userPlacemark = _mapWindow!.map.mapObjects.addPlacemark()
+                ..geometry = point
+                ..setIcon(imageProvider);
+
+              _userPlacemark!.setIconStyle(IconStyle(scale: 1.8));
+
               _zoomController = MapZoomController(mapWindow);
+
+              // TODO: Инициализируем сервис кластеризации
+              _clusterService.initialize(mapWindow);
+
+              // TODO: Добавляем тестовые точки (потом заменим на реальные)
+              _addTestPoints();
             },
           ),
           sideButtons: [
@@ -125,7 +162,6 @@ class _MapPageState extends State<MapPage> {
             SideActionButton(
               iconName: AppIcons.nearMe,
               onPressed: () {
-                log('goToMyLocation');
                 _goToMyLocation();
               },
             ),
