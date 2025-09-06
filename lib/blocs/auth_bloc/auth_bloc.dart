@@ -56,10 +56,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     try {
       final response = await authRepository.loginStep1(event.request);
-      emit(LoginStep1Success(response: response));
-      log('STEP1 RESPONSE: ${response.data.temporaryToken}');
+
+      // Проверяем success из ответа
+      if (response.success == true && response.data.temporaryToken.isNotEmpty) {
+        log('STEP1 SUCCESS: ${response.data.temporaryToken}');
+        emit(LoginStep1Success(response: response));
+      } else {
+        emit(AuthFailure(error: 'Неверные данные для входа'));
+      }
     } catch (error) {
-      emit(AuthFailure(error: error.toString()));
+      log('STEP1 ERROR: $error');
+      emit(AuthFailure(error: 'Ошибка авторизации: $error'));
     }
   }
 
@@ -72,15 +79,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       final response = await authRepository.loginStep2(event.request);
 
-      // Сохраняем токен
-      await storage.write(key: 'access_token', value: response.accessToken);
-
-      emit(LoginStep2Success(response: response));
-      emit(AuthAuthenticated(accessToken: response.accessToken));
-
-      log('ACCESS TOKEN SAVED: ${response.accessToken}');
+      // Проверяем успешность ответа от сервера
+      if (response.success) {
+        // Сохраняем токен только при успешном ответе
+        await storage.write(key: 'access_token', value: response.accessToken);
+        emit(LoginStep2Success(response: response));
+        emit(AuthAuthenticated(accessToken: response.accessToken));
+        log('ACCESS TOKEN SAVED: ${response.accessToken}');
+      } else {
+        // Если сервер вернул success: false
+        emit(AuthFailure(error: 'Неверный код подтверждения'));
+        // Возвращаемся в состояние неавторизованного пользователя
+        emit(AuthUnauthenticated());
+      }
     } catch (error) {
       emit(AuthFailure(error: error.toString()));
+      // Возвращаемся в состояние неавторизованного пользователя
+      emit(AuthUnauthenticated());
     }
   }
 

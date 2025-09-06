@@ -48,6 +48,23 @@ class _SmsVerificationSheetState extends State<SmsVerificationSheet> {
             Navigator.pop(context);
             // ignore: use_build_context_synchronously
             context.go(AppRoutes.main);
+          } else if (state is AuthFailure) {
+            // Показываем ошибку при неверном коде или success: false
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.error),
+                duration: Duration(seconds: 3),
+                backgroundColor: Colors.red,
+              ),
+            );
+
+            // Очищаем поле ввода при ошибке
+            _smsController.clear();
+
+            // Сбрасываем состояние ошибки
+            Future.delayed(Duration(seconds: 1), () {
+              context.read<AuthBloc>().add(CheckAuthStatus());
+            });
           }
         },
         child: _buildContent(),

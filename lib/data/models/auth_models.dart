@@ -59,13 +59,19 @@ class LoginStep2Request {
 }
 
 class LoginStep2Response {
+  final bool success;
   final String accessToken;
   final String? secret;
 
-  LoginStep2Response({required this.accessToken, this.secret});
+  LoginStep2Response({
+    required this.success,
+    required this.accessToken,
+    this.secret,
+  });
 
   factory LoginStep2Response.fromJson(Map<String, dynamic> json) =>
       LoginStep2Response(
+        success: json['success'] ?? false, // Добавляем проверку success
         accessToken: json['access_token'] ?? '',
         secret: json['secret'],
       );

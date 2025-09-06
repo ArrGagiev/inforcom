@@ -32,25 +32,30 @@ class _AuthSheetState extends State<AuthSheet> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthFailure) {
-          // Показываем ошибку
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.error)));
-        } else if (state is LoginStep1Success) {
-          // Переходим к следующему шагу когда получили успешный ответ
-          log('Успешно! Токен: ${state.response.data.temporaryToken}');
-
-          Navigator.pop(context);
-          AppBottomSheet.showBottomSheet(
-            context,
-            heightPercent: 0.94,
-            isKeyboardOnTop: true,
-            useRootNavigator: false,
-            child: SmsVerificationSheet(
-              temporaryToken: state.response.data.temporaryToken,
-              phoneNumber: _phoneController.text,
+          // Показываем ошибку и остаемся на этом экране
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.error),
+              duration: Duration(seconds: 3),
             ),
           );
+        } else if (state is LoginStep1Success) {
+          // Переходим к следующему шагу ТОЛЬКО при успешном ответе
+          if (state.response.success) {
+            log('Успешно! Токен: ${state.response.data.temporaryToken}');
+
+            Navigator.pop(context);
+            AppBottomSheet.showBottomSheet(
+              context,
+              heightPercent: 0.94,
+              isKeyboardOnTop: true,
+              useRootNavigator: false,
+              child: SmsVerificationSheet(
+                temporaryToken: state.response.data.temporaryToken,
+                phoneNumber: _phoneController.text,
+              ),
+            );
+          }
         }
       },
       child: Padding(
