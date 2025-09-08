@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:inforcom/blocs/auth_bloc/auth_bloc.dart';
+import 'package:inforcom/blocs/support/support_bloc.dart';
 import 'package:inforcom/core/app/app.dart';
 import 'package:inforcom/data/api/api_service.dart';
 import 'package:inforcom/data/repositories/auth_repository.dart';
+import 'package:inforcom/data/repositories/support_repository.dart';
 import 'package:yandex_maps_mapkit/init.dart' as init;
 
 void main() async {
@@ -17,11 +19,22 @@ void main() async {
   final isAuthenticated = token != null && token.isNotEmpty;
 
   final AuthRepository authRepository = AuthRepository(dio: ApiService.dio);
+  final SupportRepository supportRepository = SupportRepository(
+    dio: ApiService.dio,
+  );
 
   runApp(
-    BlocProvider(
-      create: (context) =>
-          AuthBloc(authRepository: authRepository)..add(CheckAuthStatus()),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) =>
+              AuthBloc(authRepository: authRepository)..add(CheckAuthStatus()),
+        ),
+        BlocProvider(
+          create: (context) =>
+              SupportBloc(supportRepository: supportRepository),
+        ),
+      ],
       child: App(isAuthenticated: isAuthenticated),
     ),
   );
