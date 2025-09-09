@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart' hide ImageProvider;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
@@ -6,6 +8,7 @@ import 'package:inforcom/core/resources/app_icons.dart';
 import 'package:inforcom/core/widgets/bottom_sheet/app_bottom_sheet.dart';
 import 'package:inforcom/core/widgets/dialog/dialog.dart';
 import 'package:inforcom/features/map/sheets/route_building/geolocation_dialog.dart';
+import 'package:inforcom/features/map/utils/camera_listener_service.dart';
 import 'package:inforcom/features/map/utils/cluster_service.dart';
 import 'package:inforcom/features/map/widgets/map_layout.dart';
 import 'package:inforcom/features/map/sheets/fuel_filters/fuel_filters_sheet.dart';
@@ -28,6 +31,7 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
+  CameraListenerService? _cameraListenerService;
   MapZoomController? _zoomController;
   MapWindow? _mapWindow;
   PlacemarkMapObject? _userPlacemark;
@@ -106,6 +110,7 @@ class _MapPageState extends State<MapPage> {
   @override
   void dispose() {
     _clusterService.dispose();
+    _cameraListenerService?.stopListening();
     super.dispose();
   }
 
@@ -142,11 +147,16 @@ class _MapPageState extends State<MapPage> {
 
               _zoomController = MapZoomController(mapWindow);
 
-              // TODO: Инициализируем сервис кластеризации
+              // Инициализируем сервис кластеризации
               _clusterService.initialize(mapWindow);
 
-              // TODO: Добавляем тестовые точки (потом заменим на реальные)
+              // Добавляем тестовые точки (потом заменим на реальные)
               _addTestPoints();
+
+              // Инициализируем сервис отслеживания камеры
+              _cameraListenerService = CameraListenerService(mapWindow);
+              // Начинаем слушать
+              _cameraListenerService!.startListening();
             },
           ),
           sideButtons: [
