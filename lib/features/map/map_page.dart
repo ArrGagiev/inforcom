@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart' hide ImageProvider;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
@@ -7,12 +5,12 @@ import 'package:inforcom/blocs/auth_bloc/auth_bloc.dart';
 import 'package:inforcom/core/resources/app_icons.dart';
 import 'package:inforcom/core/widgets/bottom_sheet/app_bottom_sheet.dart';
 import 'package:inforcom/core/widgets/dialog/dialog.dart';
-import 'package:inforcom/features/map/sheets/route_building/geolocation_dialog.dart';
+import 'package:inforcom/features/map/sheets/address_search/geolocation_dialog.dart';
+import 'package:inforcom/features/map/sheets/address_search/address_search_sheet.dart';
 import 'package:inforcom/features/map/utils/camera_listener_service.dart';
 import 'package:inforcom/features/map/utils/cluster_service.dart';
 import 'package:inforcom/features/map/widgets/map_layout.dart';
 import 'package:inforcom/features/map/sheets/fuel_filters/fuel_filters_sheet.dart';
-import 'package:inforcom/features/map/sheets/route_building/route_building_sheet.dart';
 import 'package:inforcom/features/map/utils/zoom_controller.dart';
 import 'package:inforcom/features/map/widgets/buttons/action_button.dart';
 import 'package:inforcom/features/map/widgets/buttons/side_action_button.dart';
@@ -116,7 +114,6 @@ class _MapPageState extends State<MapPage> {
 
   //-------------------------------------------------------------------------
   //-------------------------------------------------------------------------
-  //-------------------------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +126,10 @@ class _MapPageState extends State<MapPage> {
               _mapWindow = mapWindow;
 
               // стартовая позиция — Мск
-              final point = Point(latitude: 55.751225, longitude: 37.62954);
+              final startPoint = Point(
+                latitude: 55.751225,
+                longitude: 37.62954,
+              );
               // иконка местоположения
               final imageProvider = ImageProvider.fromImageProvider(
                 const AssetImage(AppIcons.mapPoint),
@@ -137,13 +137,13 @@ class _MapPageState extends State<MapPage> {
 
               // стартовая позиция — Мск
               mapWindow.map.move(
-                CameraPosition(point, zoom: 15.0, azimuth: 0, tilt: 0),
+                CameraPosition(startPoint, zoom: 15.0, azimuth: 0, tilt: 0),
               );
               _userPlacemark = _mapWindow!.map.mapObjects.addPlacemark()
-                ..geometry = point
+                ..geometry = startPoint
                 ..setIcon(imageProvider);
 
-              _userPlacemark!.setIconStyle(IconStyle(scale: 1.8));
+              _userPlacemark!.setIconStyle(IconStyle(scale: 1.2));
 
               _zoomController = MapZoomController(mapWindow);
 
@@ -193,7 +193,8 @@ class _MapPageState extends State<MapPage> {
                 AppBottomSheet.showBottomSheet(
                   context,
                   isKeyboardOnTop: true,
-                  child: const RouteBuildingSheet(),
+                  child: AddressSearchWidget(),
+                  // child: const RouteBuildingSheet(),
                 );
               },
             ),

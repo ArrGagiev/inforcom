@@ -16,12 +16,11 @@ class AppTextForm extends StatelessWidget {
     this.controller,
     this.enabled = true,
     this.validator,
-    //-----------------------------┐
-    // Для управления из BLoC
     this.showInfoIcon = false,
     this.showSearchIcon = false,
     this.hasError = false,
-    //-----------------------------┘
+    this.focusNode,
+    this.onChanged,
   });
 
   final ValidationType? type;
@@ -32,6 +31,8 @@ class AppTextForm extends StatelessWidget {
   final bool showInfoIcon;
   final bool showSearchIcon;
   final bool hasError;
+  final FocusNode? focusNode;
+  final void Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -44,9 +45,8 @@ class AppTextForm extends StatelessWidget {
       style: AppTextStyles.body2,
       decoration: _buildDecoration(context),
       validator: validator,
-      // onChanged: (text) {
-      //   log(text);
-      // },
+      focusNode: focusNode,
+      onChanged: onChanged,
     );
   }
 

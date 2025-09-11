@@ -7,8 +7,9 @@ import 'package:inforcom/core/widgets/bottom_sheet/app_bottom_sheet.dart';
 import 'package:inforcom/core/widgets/buttons/primary_button.dart';
 import 'package:inforcom/features/map/sheets/gas_station/gas_station_sheet.dart';
 
-class SelectedStationSheet extends StatelessWidget {
-  const SelectedStationSheet({super.key});
+// TODO: пока еще не подкючен!
+class SelectedAddressSheet extends StatelessWidget {
+  const SelectedAddressSheet({super.key});
 
   @override
   Widget build(BuildContext context) {
