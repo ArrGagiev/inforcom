@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:flutter/material.dart' hide ImageProvider;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
@@ -7,8 +8,10 @@ import 'package:inforcom/core/widgets/bottom_sheet/app_bottom_sheet.dart';
 import 'package:inforcom/core/widgets/dialog/dialog.dart';
 import 'package:inforcom/features/map/sheets/address_search/geolocation_dialog.dart';
 import 'package:inforcom/features/map/sheets/address_search/address_search_sheet.dart';
+import 'package:inforcom/features/map/sheets/address_search/selected_address_sheet.dart';
 import 'package:inforcom/features/map/utils/camera_listener_service.dart';
 import 'package:inforcom/features/map/utils/cluster_service.dart';
+import 'package:inforcom/features/map/utils/driving_route_service.dart';
 import 'package:inforcom/features/map/widgets/map_layout.dart';
 import 'package:inforcom/features/map/sheets/fuel_filters/fuel_filters_sheet.dart';
 import 'package:inforcom/features/map/utils/zoom_controller.dart';
@@ -34,41 +37,38 @@ class _MapPageState extends State<MapPage> {
   MapWindow? _mapWindow;
   PlacemarkMapObject? _userPlacemark;
   final ClusterService _clusterService = ClusterService();
+  final DrivingRouteService _drivingRouteService = DrivingRouteService();
+  Point? _currentUserLocation;
 
-  // Запрос разрешения через permission_handler
   Future<bool> _requestLocationPermission() async {
     final status = await Permission.locationWhenInUse.request();
     return status.isGranted;
   }
 
   Future<void> _goToMyLocation() async {
-    // Сначала проверяем разрешение
     bool granted = await _requestLocationPermission();
     if (!granted) {
       _showLocationDialog();
       return;
     }
 
-    // Проверяем включен ли GPS
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       _showLocationDialog();
       return;
     }
 
-    // Получаем позицию пользователя
     final pos = await Geolocator.getCurrentPosition(
       locationSettings: const LocationSettings(accuracy: LocationAccuracy.high),
     );
 
     final point = Point(latitude: pos.latitude, longitude: pos.longitude);
+    _currentUserLocation = point;
 
-    // Перемещаем карту в позицию пользователя
     _mapWindow?.map.move(
       CameraPosition(point, zoom: 15.0, azimuth: 0, tilt: 0),
     );
 
-    // Добавляем или обновляем метку
     if (_userPlacemark == null) {
       final imageProvider = ImageProvider.fromImageProvider(
         const AssetImage(AppIcons.mapPoint),
@@ -77,7 +77,7 @@ class _MapPageState extends State<MapPage> {
         ..geometry = point
         ..setIcon(imageProvider);
 
-      _userPlacemark!.setIconStyle(IconStyle(scale: 1.8)); // Размер метки
+      _userPlacemark!.setIconStyle(IconStyle(scale: 1.8));
     } else {
       _userPlacemark!.geometry = point;
     }
@@ -91,7 +91,39 @@ class _MapPageState extends State<MapPage> {
     );
   }
 
-  // TODO: Пример добавления тестовых точек для кластеризации
+  /// Построение маршрута до точки
+  Future<void> _buildRouteToPoint(Point destinationPoint) async {
+    if (_currentUserLocation == null) {
+      log('Неизвестно текущее местоположение');
+      return;
+    }
+
+    try {
+      final route = await _drivingRouteService.calculateRoute(
+        startPoint: _currentUserLocation!,
+        endPoint: destinationPoint,
+      );
+
+      if (route != null) {
+        _drivingRouteService.logRouteInfo(route);
+
+        final routeInfo = _drivingRouteService.getRouteInfo(route);
+        if (routeInfo != null) {
+          log('Маршрут построен успешно!');
+          log('Расстояние: ${routeInfo.distance}');
+          log('Время: ${routeInfo.time}');
+
+          // Здесь можно показать информацию о маршруте в UI
+          // Например, открыть bottom sheet с информацией
+        }
+      } else {
+        log('Не удалось построить маршрут');
+      }
+    } catch (e) {
+      log('Ошибка при построении маршрута: $e');
+    }
+  }
+
   void _addTestPoints() {
     final points = [
       Point(latitude: 55.751225, longitude: 37.62954),
@@ -109,11 +141,9 @@ class _MapPageState extends State<MapPage> {
   void dispose() {
     _clusterService.dispose();
     _cameraListenerService?.stopListening();
+    _drivingRouteService.dispose();
     super.dispose();
   }
-
-  //-------------------------------------------------------------------------
-  //-------------------------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -125,17 +155,16 @@ class _MapPageState extends State<MapPage> {
               mapkit.onStart();
               _mapWindow = mapWindow;
 
-              // стартовая позиция — Мск
               final startPoint = Point(
                 latitude: 55.751225,
                 longitude: 37.62954,
               );
-              // иконка местоположения
+              _currentUserLocation = startPoint;
+
               final imageProvider = ImageProvider.fromImageProvider(
                 const AssetImage(AppIcons.mapPoint),
               );
 
-              // стартовая позиция — Мск
               mapWindow.map.move(
                 CameraPosition(startPoint, zoom: 15.0, azimuth: 0, tilt: 0),
               );
@@ -146,16 +175,10 @@ class _MapPageState extends State<MapPage> {
               _userPlacemark!.setIconStyle(IconStyle(scale: 1.2));
 
               _zoomController = MapZoomController(mapWindow);
-
-              // Инициализируем сервис кластеризации
               _clusterService.initialize(mapWindow);
-
-              // Добавляем тестовые точки (потом заменим на реальные)
               _addTestPoints();
 
-              // Инициализируем сервис отслеживания камеры
               _cameraListenerService = CameraListenerService(mapWindow);
-              // Начинаем слушать
               _cameraListenerService!.startListening();
             },
           ),
@@ -171,9 +194,7 @@ class _MapPageState extends State<MapPage> {
             SizedBox(height: 28),
             SideActionButton(
               iconName: AppIcons.nearMe,
-              onPressed: () {
-                _goToMyLocation();
-              },
+              onPressed: _goToMyLocation,
             ),
           ],
           bottomButtons: [
@@ -193,8 +214,11 @@ class _MapPageState extends State<MapPage> {
                 AppBottomSheet.showBottomSheet(
                   context,
                   isKeyboardOnTop: true,
-                  child: AddressSearchWidget(),
-                  // child: const RouteBuildingSheet(),
+                  child: AddressSearchWidget(
+                    onAddressSelected: (point) {
+                      _buildRouteToPoint(point);
+                    },
+                  ),
                 );
               },
             ),

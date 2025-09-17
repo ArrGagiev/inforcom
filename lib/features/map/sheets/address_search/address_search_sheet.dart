@@ -45,7 +45,6 @@ class AddressSearchWidget extends StatelessWidget {
     );
   }
 
-  // TODO:                                 List
   Widget _buildSuggestionsList(
     BuildContext context,
     AddressSearchProvider provider,
@@ -86,11 +85,7 @@ class AddressSearchWidget extends StatelessWidget {
     return Expanded(
       child: Container(
         margin: const EdgeInsets.only(top: 16),
-        decoration: BoxDecoration(
-          color: AppColors.primary,
-          // borderRadius: BorderRadius.circular(12),
-          // boxShadow: const [BoxShadow(color: Colors.black26, blurRadius: 6)],
-        ),
+        decoration: BoxDecoration(color: AppColors.primary),
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxHeight: 300),
           child: ListView.separated(
@@ -109,7 +104,6 @@ class AddressSearchWidget extends StatelessWidget {
     );
   }
 
-  // TODO:                                 Item
   Widget _buildSuggestionItem(
     BuildContext context,
     AddressSearchProvider provider,
@@ -117,6 +111,7 @@ class AddressSearchWidget extends StatelessWidget {
   ) {
     final title = suggestion.title.text;
     final subtitle = suggestion.subtitle?.text;
+    final distance = suggestion.distance?.value;
 
     return InkWell(
       onTap: () => _onSuggestionSelected(context, provider, suggestion),
@@ -156,6 +151,13 @@ class AddressSearchWidget extends StatelessWidget {
                 ],
               ),
             ),
+            if (distance != null)
+              Text(
+                '${(distance / 1000).toStringAsFixed(1)} км',
+                style: AppTextStyles.body3.copyWith(
+                  color: AppColors.secondaryText,
+                ),
+              ),
           ],
         ),
       ),
@@ -187,6 +189,7 @@ class AddressSearchWidget extends StatelessWidget {
 
     if (point != null && onAddressSelected != null) {
       onAddressSelected!(point);
+      Navigator.pop(context); // Закрываем поисковый sheet
     }
   }
 }
