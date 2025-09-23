@@ -12,6 +12,7 @@ import 'package:inforcom/features/map/sheets/address_search/selected_address_she
 import 'package:inforcom/features/map/utils/camera_listener_service.dart';
 import 'package:inforcom/features/map/utils/cluster_service.dart';
 import 'package:inforcom/features/map/utils/driving_route_service.dart';
+import 'package:inforcom/features/map/utils/search_service/address_search_provider.dart';
 import 'package:inforcom/features/map/widgets/map_layout.dart';
 import 'package:inforcom/features/map/sheets/fuel_filters/fuel_filters_sheet.dart';
 import 'package:inforcom/features/map/utils/zoom_controller.dart';
@@ -137,6 +138,51 @@ class _MapPageState extends State<MapPage> {
     _clusterService.addPoints(points);
   }
 
+  //********************************************************************/
+  // Метод для расчета информации о маршруте
+  Future<RouteInfo?> _calculateRouteInfo(Point destinationPoint) async {
+    if (_currentUserLocation == null) {
+      log('Неизвестно текущее местоположение');
+      return null;
+    }
+
+    try {
+      final route = await _drivingRouteService.calculateRoute(
+        startPoint: _currentUserLocation!,
+        endPoint: destinationPoint,
+      );
+
+      if (route != null) {
+        return _drivingRouteService.getRouteInfo(route);
+      }
+    } catch (e) {
+      log('Ошибка при расчете маршрута: $e');
+    }
+    return null;
+  }
+
+  // Метод для отображения sheet с выбранным адресом
+  void _showSelectedAddressSheet(
+    BuildContext context, {
+    required String address,
+    required Point point,
+    required RouteInfo? routeInfo,
+  }) {
+    AppBottomSheet.showBottomSheet(
+      context,
+      child: SelectedAddressSheet(
+        address: address,
+        duration: routeInfo?.time ?? 'Время неизвестно',
+        distance: routeInfo?.distance ?? 'Расстояние неизвестно',
+        onBuildRoute: () {
+          _buildRouteToPoint(point);
+          // Дополнительная логика при построении маршрута
+        },
+      ),
+    );
+  }
+  //********************************************************************/
+
   @override
   void dispose() {
     _clusterService.dispose();
@@ -218,10 +264,40 @@ class _MapPageState extends State<MapPage> {
                     onAddressSelected: (point) {
                       _buildRouteToPoint(point);
                     },
+                    // Логика обработки выбора предложения
+                    onSuggestionSelected: (suggestion) async {
+                      final provider = AddressSearchProvider();
+                      final point = await provider.selectSuggestion(
+                        suggestion,
+                        boundingBox: BoundingBox(
+                          Point(latitude: 35.0, longitude: 19.0),
+                          Point(latitude: 82.0, longitude: 190.0),
+                        ),
+                      );
+
+                      if (point != null) {
+                        // Закрываем поисковый sheet
+                        // ignore: use_build_context_synchronously
+                        Navigator.of(context, rootNavigator: true).pop();
+
+                        // Рассчитываем информацию о маршруте
+                        final routeInfo = await _calculateRouteInfo(point);
+
+                        // Открываем sheet с информацией об адресе
+                        _showSelectedAddressSheet(
+                          // ignore: use_build_context_synchronously
+                          context,
+                          address: suggestion.title.text,
+                          point: point,
+                          routeInfo: routeInfo,
+                        );
+                      }
+                    },
                   ),
                 );
               },
             ),
+
             const Spacer(),
             if (state is AuthAuthenticated)
               TrafficToggleButton(onPressed: () {}),

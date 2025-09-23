@@ -8,11 +8,17 @@ import 'package:provider/provider.dart';
 import 'package:yandex_maps_mapkit/search.dart';
 import 'package:yandex_maps_mapkit/mapkit.dart' hide Icon, TextStyle;
 import '../../utils/search_service/address_search_provider.dart';
+import 'suggestion_item_widget.dart';
 
 class AddressSearchWidget extends StatelessWidget {
   final ValueChanged<Point>? onAddressSelected;
+  final Function(SuggestItem suggestion) onSuggestionSelected;
 
-  AddressSearchWidget({super.key, this.onAddressSelected});
+  AddressSearchWidget({
+    super.key,
+    this.onAddressSelected,
+    required this.onSuggestionSelected,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -96,69 +102,12 @@ class AddressSearchWidget extends StatelessWidget {
                 const Divider(color: AppColors.lightGray),
             itemBuilder: (context, index) {
               final suggestion = provider.suggestions[index];
-              return _buildSuggestionItem(context, provider, suggestion);
+              return SuggestionItemWidget(
+                suggestion: suggestion,
+                onTap: () => onSuggestionSelected(suggestion),
+              );
             },
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSuggestionItem(
-    BuildContext context,
-    AddressSearchProvider provider,
-    SuggestItem suggestion,
-  ) {
-    final title = suggestion.title.text;
-    final subtitle = suggestion.subtitle?.text;
-    final distance = suggestion.distance?.value;
-
-    return InkWell(
-      onTap: () => _onSuggestionSelected(context, provider, suggestion),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(12, 10, 12, 4),
-        child: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(right: 8),
-              child: SvgPicture.asset(
-                AppIcons.location,
-                colorFilter: ColorFilter.mode(
-                  AppColors.accent2,
-                  BlendMode.srcIn,
-                ),
-              ),
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: AppTextStyles.body2.copyWith(
-                      color: AppColors.primaryText,
-                    ),
-                  ),
-                  if (subtitle != null) ...[
-                    const SizedBox(height: 4),
-                    Text(
-                      subtitle,
-                      style: AppTextStyles.body3.copyWith(
-                        color: AppColors.secondaryText,
-                      ),
-                    ),
-                  ],
-                ],
-              ),
-            ),
-            if (distance != null)
-              Text(
-                '${(distance / 1000).toStringAsFixed(1)} км',
-                style: AppTextStyles.body3.copyWith(
-                  color: AppColors.secondaryText,
-                ),
-              ),
-          ],
         ),
       ),
     );
@@ -175,21 +124,5 @@ class AddressSearchWidget extends StatelessWidget {
     String query,
   ) {
     provider.searchSuggestions(query: query, boundingBox: _sngRegion);
-  }
-
-  void _onSuggestionSelected(
-    BuildContext context,
-    AddressSearchProvider provider,
-    SuggestItem suggestion,
-  ) async {
-    final point = await provider.selectSuggestion(
-      suggestion,
-      boundingBox: _sngRegion,
-    );
-
-    if (point != null && onAddressSelected != null) {
-      onAddressSelected!(point);
-      Navigator.pop(context); // Закрываем поисковый sheet
-    }
   }
 }
